@@ -12,10 +12,12 @@ import path from "path";
 import { UserResolver } from "./resolvers/user";
 import { User } from "./entities/User";
 import { Post } from "./entities/Post";
+import { Comment } from "./entities/Comment";
 import { PostResolver } from "./resolvers/post";
 import postUpload from "./resolvers/upload/post";
 import { Event } from "./entities/Event";
 import { EventResolver } from "./resolvers/event";
+import { CommentResolver } from "./resolvers/comment";
 
 // rerun
 const main = async () => {
@@ -27,7 +29,7 @@ const main = async () => {
         logging: true,
         migrations: [path.join(__dirname, "./migrations/*")],
         synchronize: true, // set to false, when wiping the data (i.e. await Post.delete({}); )
-        entities: [User, Post, Event],
+        entities: [User, Post, Event, Comment],
     });
     conn.runMigrations();
     const app = express();
@@ -64,7 +66,12 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, PostResolver, EventResolver],
+            resolvers: [
+                UserResolver,
+                PostResolver,
+                EventResolver,
+                CommentResolver,
+            ],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),

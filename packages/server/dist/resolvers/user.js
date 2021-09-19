@@ -201,6 +201,12 @@ let UserResolver = class UserResolver {
     async getAllUsers() {
         return User_1.User.find({});
     }
+    async getUser(id) {
+        return User_1.User.findOne({
+            where: { id },
+            relations: ["events", "posts", "posts.creator", "posts.event"],
+        });
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
@@ -257,6 +263,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "getAllUsers", null);
+__decorate([
+    (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
+    (0, type_graphql_1.Query)(() => User_1.User),
+    __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "getUser", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

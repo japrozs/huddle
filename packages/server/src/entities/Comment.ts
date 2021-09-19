@@ -1,52 +1,42 @@
 import { Field, ObjectType } from "type-graphql";
 import {
+    BaseEntity,
     Column,
     CreateDateColumn,
     Entity,
-    BaseEntity,
+    ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
-    ManyToOne,
-    OneToMany,
 } from "typeorm";
-import { Event } from "./Event";
+import { Post } from "./Post";
 import { User } from "./User";
-import { Comment } from "./Comment";
 
 @ObjectType()
 @Entity()
-export class Post extends BaseEntity {
+export class Comment extends BaseEntity {
     @Field()
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Field()
     @Column()
-    body: string;
-
-    @Field()
-    @Column({ default: "" })
-    imgUrl: string;
-
-    @Field()
-    @Column()
     creatorId: number;
 
     @Field(() => User)
-    @ManyToOne(() => User, (user) => user.posts)
+    @ManyToOne(() => User, (user) => user.comments)
     creator: User;
 
     @Field()
     @Column()
-    eventId: number;
+    body: string;
 
-    @Field(() => Event)
-    @ManyToOne(() => Event, (event) => event.posts)
-    event: Event;
+    @Field()
+    @Column()
+    postId: number;
 
-    @Field(() => [Comment])
-    @OneToMany(() => Comment, (comment) => comment.post)
-    comments: Comment[];
+    @Field(() => Post)
+    @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
+    post: Post;
 
     @Field(() => String)
     @CreateDateColumn()

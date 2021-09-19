@@ -4,6 +4,7 @@ import {
     Arg,
     Ctx,
     Field,
+    Int,
     Mutation,
     ObjectType,
     Query,
@@ -243,5 +244,14 @@ export class UserResolver {
     @Query(() => [User])
     async getAllUsers() {
         return User.find({});
+    }
+
+    @UseMiddleware(isAuth)
+    @Query(() => User)
+    async getUser(@Arg("id", () => Int) id: number) {
+        return User.findOne({
+            where: { id },
+            relations: ["events", "posts", "posts.creator", "posts.event"],
+        });
     }
 }

@@ -12,54 +12,43 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostResolver = void 0;
-const Post_1 = require("../entities/Post");
-const type_graphql_1 = require("type-graphql");
+exports.CommentResolver = void 0;
+const Comment_1 = require("../entities/Comment");
 const isAuth_1 = require("../middleware/isAuth");
-class PostResolver {
-    getPosts() {
-        return Post_1.Post.find({
-            relations: ["creator", "event", "comments"],
-            order: { createdAt: "DESC" },
-        });
-    }
-    async createPost(eventId, body, { req }) {
-        return Post_1.Post.create({
+const type_graphql_1 = require("type-graphql");
+class CommentResolver {
+    async createComment(postId, body, { req }) {
+        return Comment_1.Comment.create({
             creatorId: req.session.userId,
-            eventId,
+            postId,
             body,
         }).save();
     }
-    async getPost(id) {
-        return Post_1.Post.findOne({
-            where: { id },
-            relations: ["event", "creator", "comments", "comments.creator"],
+    async getComments(id) {
+        return Comment_1.Comment.find({
+            where: { postId: id },
+            relations: ["creator"],
+            order: { createdAt: "DESC" },
         });
     }
 }
 __decorate([
-    (0, type_graphql_1.Query)(() => [Post_1.Post]),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], PostResolver.prototype, "getPosts", null);
-__decorate([
     (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
-    (0, type_graphql_1.Mutation)(() => Post_1.Post),
-    __param(0, (0, type_graphql_1.Arg)("eventId", () => type_graphql_1.Int)),
+    (0, type_graphql_1.Mutation)(() => Comment_1.Comment),
+    __param(0, (0, type_graphql_1.Arg)("postId", () => type_graphql_1.Int)),
     __param(1, (0, type_graphql_1.Arg)("body")),
     __param(2, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String, Object]),
     __metadata("design:returntype", Promise)
-], PostResolver.prototype, "createPost", null);
+], CommentResolver.prototype, "createComment", null);
 __decorate([
     (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
-    (0, type_graphql_1.Query)(() => Post_1.Post),
+    (0, type_graphql_1.Query)(() => [Comment_1.Comment]),
     __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], PostResolver.prototype, "getPost", null);
-exports.PostResolver = PostResolver;
-//# sourceMappingURL=post.js.map
+], CommentResolver.prototype, "getComments", null);
+exports.CommentResolver = CommentResolver;
+//# sourceMappingURL=comment.js.map

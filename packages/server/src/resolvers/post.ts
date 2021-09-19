@@ -2,12 +2,13 @@ import { Post } from "../entities/Post";
 import { Arg, Ctx, Int, Mutation, Query, UseMiddleware } from "type-graphql";
 import { isAuth } from "../middleware/isAuth";
 import { Context } from "../types";
+import { getRepository } from "typeorm";
 
 export class PostResolver {
     @Query(() => [Post])
     getPosts() {
         return Post.find({
-            relations: ["creator", "event"],
+            relations: ["creator", "event", "comments"],
             order: { createdAt: "DESC" },
         });
     }
@@ -24,5 +25,14 @@ export class PostResolver {
             eventId,
             body,
         }).save();
+    }
+
+    @UseMiddleware(isAuth)
+    @Query(() => Post)
+    async getPost(@Arg("id", () => Int) id: number) {
+        return Post.findOne({
+            where: { id },
+            relations: ["event", "creator", "comments", "comments.creator"],
+        });
     }
 }

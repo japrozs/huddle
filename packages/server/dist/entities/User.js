@@ -15,6 +15,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Event_1 = require("./Event");
 const Post_1 = require("./Post");
+const Comment_1 = require("./Comment");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -48,10 +49,17 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "bio", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => [Post_1.Post]),
     (0, typeorm_1.OneToMany)(() => Post_1.Post, (post) => post.creator),
     __metadata("design:type", Array)
 ], User.prototype, "posts", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => [Comment_1.Comment]),
+    (0, typeorm_1.OneToMany)(() => Comment_1.Comment, (comment) => comment.creator),
+    __metadata("design:type", Array)
+], User.prototype, "comments", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => [Event_1.Event]),
     (0, typeorm_1.OneToMany)(() => Event_1.Event, (event) => event.creator),
     __metadata("design:type", Array)
 ], User.prototype, "events", void 0);

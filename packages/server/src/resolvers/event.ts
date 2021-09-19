@@ -66,7 +66,7 @@ export class EventResolver {
     async getEvent(@Arg("id", () => Int) id: number) {
         return Event.findOne({
             where: { id },
-            relations: ["creator", "posts"],
+            relations: ["creator", "posts", "posts.creator", "posts.event"],
         });
     }
 }

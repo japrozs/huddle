@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { Event } from "./Event";
 import { Post } from "./Post";
+import { Comment } from "./Comment";
 
 @ObjectType()
 @Entity()
@@ -39,9 +40,15 @@ export class User extends BaseEntity {
     @Column({ default: bioGenerator() })
     bio: string;
 
+    @Field(() => [Post])
     @OneToMany(() => Post, (post) => post.creator)
     posts: Post[];
 
+    @Field(() => [Comment])
+    @OneToMany(() => Comment, (comment) => comment.creator)
+    comments: Comment[];
+
+    @Field(() => [Event])
     @OneToMany(() => Event, (event) => event.creator)
     events: Event[];
 

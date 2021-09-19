@@ -17,10 +17,12 @@ const path_1 = __importDefault(require("path"));
 const user_1 = require("./resolvers/user");
 const User_1 = require("./entities/User");
 const Post_1 = require("./entities/Post");
+const Comment_1 = require("./entities/Comment");
 const post_1 = require("./resolvers/post");
 const post_2 = __importDefault(require("./resolvers/upload/post"));
 const Event_1 = require("./entities/Event");
 const event_1 = require("./resolvers/event");
+const comment_1 = require("./resolvers/comment");
 const main = async () => {
     const conn = await (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -30,7 +32,7 @@ const main = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         synchronize: true,
-        entities: [User_1.User, Post_1.Post, Event_1.Event],
+        entities: [User_1.User, Post_1.Post, Event_1.Event, Comment_1.Comment],
     });
     conn.runMigrations();
     const app = (0, express_1.default)();
@@ -60,7 +62,12 @@ const main = async () => {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
-            resolvers: [user_1.UserResolver, post_1.PostResolver, event_1.EventResolver],
+            resolvers: [
+                user_1.UserResolver,
+                post_1.PostResolver,
+                event_1.EventResolver,
+                comment_1.CommentResolver,
+            ],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),
