@@ -1,7 +1,14 @@
 {
-  "name": "root",
-  "private": true,
-  "devDependencies": {
-    "lerna": "^4.0.0"
-  }
+    "name": "root",
+    "private": true,
+    "scripts": {
+        "test": "lerna run test --scope@huddle/server",
+        "version": "lerna version --conventional-commits --yes",
+        "diff": "lerna diff",
+        "since": "lerna run test --since",
+        "build": "lerna run build --scope{@huddle/server,@huddle/app}"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    }
 }

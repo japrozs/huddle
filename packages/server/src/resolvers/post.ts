@@ -2,7 +2,6 @@ import { Post } from "../entities/Post";
 import { Arg, Ctx, Int, Mutation, Query, UseMiddleware } from "type-graphql";
 import { isAuth } from "../middleware/isAuth";
 import { Context } from "../types";
-import { getRepository } from "typeorm";
 
 export class PostResolver {
     @Query(() => [Post])
