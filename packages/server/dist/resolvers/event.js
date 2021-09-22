@@ -66,7 +66,13 @@ class EventResolver {
     async getEvent(id) {
         return Event_1.Event.findOne({
             where: { id },
-            relations: ["creator", "posts", "posts.creator", "posts.event"],
+            relations: [
+                "creator",
+                "posts",
+                "posts.creator",
+                "posts.event",
+                "posts.comments",
+            ],
         });
     }
 }

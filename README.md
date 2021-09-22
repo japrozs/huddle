@@ -20,9 +20,9 @@ Building the figma elements into different components.
 
 -   [x] Event Page
 
--   [ ] Create Page
+-   [x] Create Page
 
--   [ ] Search Page
+-   [x] Search Page
 
 -   [x] Input component
 
