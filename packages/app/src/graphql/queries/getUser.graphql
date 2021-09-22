@@ -1,0 +1,46 @@
+query getUser($id: Int!) {
+    getUser(id: $id) {
+        id
+        username
+        name
+        email
+        bio
+        imgUrl
+        createdAt
+        events {
+            id
+            name
+            imgUrl
+            tagLine
+        }
+        posts {
+            id
+            body
+            imgUrl
+            likes
+            createdAt
+            updatedAt
+            creatorId
+            eventId
+            event {
+                id
+                name
+                imgUrl
+                tagLine
+                description
+            }
+            comments {
+                id
+                body
+                createdAt
+                updatedAt
+            }
+            creator {
+                id
+                username
+                bio
+                imgUrl
+            }
+        }
+    }
+}

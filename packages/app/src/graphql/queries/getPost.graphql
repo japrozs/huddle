@@ -1,0 +1,14 @@
+query getPost($id: Int!) {
+    getPost(id: $id) {
+        ...RegularPost
+        comments {
+            id
+            body
+            createdAt
+            updatedAt
+            creator {
+                ...RegularUser
+            }
+        }
+    }
+}

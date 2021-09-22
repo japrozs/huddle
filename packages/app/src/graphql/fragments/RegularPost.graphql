@@ -1,0 +1,29 @@
+fragment RegularPost on Post {
+    id
+    body
+    imgUrl
+    creatorId
+    creator {
+        ...RegularUser
+    }
+    likes
+    eventId
+    event {
+        id
+        name
+        imgUrl
+        tagLine
+        description
+        creatorId
+        createdAt
+        updatedAt
+    }
+    comments {
+        id
+        body
+        createdAt
+        updatedAt
+    }
+    createdAt
+    updatedAt
+}

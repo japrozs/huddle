@@ -1,0 +1,16 @@
+fragment RegularEvent on Event {
+    id
+    name
+    imgUrl
+    tagLine
+    posts {
+        ...RegularPost
+    }
+    description
+    creatorId
+    creator {
+        ...RegularUser
+    }
+    createdAt
+    updatedAt
+}

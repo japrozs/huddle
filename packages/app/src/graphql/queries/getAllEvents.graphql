@@ -1,0 +1,11 @@
+query getAllEvents {
+    getAllEvents {
+        id
+        name
+        imgUrl
+        tagLine
+        description
+        createdAt
+        updatedAt
+    }
+}

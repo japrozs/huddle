@@ -1,0 +1,44 @@
+query getEvent($id: Int!) {
+    getEvent(id: $id) {
+        id
+        name
+        imgUrl
+        tagLine
+        posts {
+            id
+            body
+            imgUrl
+            createdAt
+            updatedAt
+            creatorId
+            eventId
+            likes
+            comments {
+                id
+                body
+                createdAt
+                updatedAt
+            }
+            event {
+                id
+                name
+                imgUrl
+                tagLine
+                description
+            }
+            creator {
+                id
+                username
+                bio
+                imgUrl
+            }
+        }
+        description
+        creatorId
+        creator {
+            ...RegularUser
+        }
+        createdAt
+        updatedAt
+    }
+}

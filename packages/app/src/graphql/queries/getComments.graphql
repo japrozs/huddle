@@ -1,0 +1,11 @@
+query getComments($id: Int!) {
+    getComments(id: $id) {
+        id
+        body
+        createdAt
+        updatedAt
+        creator {
+            ...RegularUser
+        }
+    }
+}

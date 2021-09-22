@@ -1,0 +1,5 @@
+query getAllUsers {
+    getAllUsers {
+        ...RegularUser
+    }
+}
