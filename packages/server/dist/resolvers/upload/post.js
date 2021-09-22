@@ -34,7 +34,7 @@ router.post("/upload", isAuth_1.expressIsAuth, upload.single("file"), async (req
         creatorId: req.session.userId,
         body: req.body.body,
         eventId: req.body.eventId,
-        imgUrl: `http://localhost:4000/images/posts/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`,
+        imgUrl: `http://192.168.1.5:4000/images/posts/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`,
     }).save();
     console.log(req.file);
     return res.json({ success: true });

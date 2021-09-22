@@ -204,7 +204,13 @@ let UserResolver = class UserResolver {
     async getUser(id) {
         return User_1.User.findOne({
             where: { id },
-            relations: ["events", "posts", "posts.creator", "posts.event"],
+            relations: [
+                "events",
+                "posts",
+                "posts.creator",
+                "posts.event",
+                "posts.comments",
+            ],
         });
     }
 };

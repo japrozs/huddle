@@ -7,7 +7,7 @@ import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
-import { createConnection } from "typeorm";
+import { createConnection, getRepository } from "typeorm";
 import path from "path";
 import { UserResolver } from "./resolvers/user";
 import { User } from "./entities/User";

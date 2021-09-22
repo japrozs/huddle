@@ -251,7 +251,13 @@ export class UserResolver {
     async getUser(@Arg("id", () => Int) id: number) {
         return User.findOne({
             where: { id },
-            relations: ["events", "posts", "posts.creator", "posts.event"],
+            relations: [
+                "events",
+                "posts",
+                "posts.creator",
+                "posts.event",
+                "posts.comments",
+            ],
         });
     }
 }

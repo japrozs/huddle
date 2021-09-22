@@ -34,7 +34,7 @@ router.post(
             creatorId: req.session.userId,
             body: req.body.body,
             eventId: req.body.eventId,
-            imgUrl: `http://localhost:4000/images/posts/${req.file?.filename}`,
+            imgUrl: `http://192.168.1.5:4000/images/posts/${req.file?.filename}`,
         }).save();
         console.log(req.file);
         return res.json({ success: true });

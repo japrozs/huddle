@@ -38,6 +38,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Post.prototype, "creatorId", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], Post.prototype, "likes", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => User_1.User),
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.posts),
     __metadata("design:type", User_1.User)

@@ -14,17 +14,17 @@ Building the figma elements into different components.
 
 -   [x] Text Post Card
 
--   [ ] Home Page
+-   [x] Home Page
 
--   [ ] Profile Page
+-   [x] Profile Page
 
--   [ ] Event Page
+-   [x] Event Page
 
 -   [ ] Create Page
 
 -   [ ] Search Page
 
--   [ ] Input component
+-   [x] Input component
 
 ## Functional components
 
@@ -38,7 +38,7 @@ Building the figma elements into different components.
 
 -   [ ] Add documentation website
 
--   [ ] Create logo
+-   [x] Create logo
 
 -   [ ] Integrate discourse for a forum
 
