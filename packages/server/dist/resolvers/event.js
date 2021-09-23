@@ -17,6 +17,7 @@ const Event_1 = require("../entities/Event");
 const type_graphql_1 = require("type-graphql");
 const isAuth_1 = require("../middleware/isAuth");
 const validateEvent_1 = require("../utils/validateEvent");
+const Post_1 = require("../entities/Post");
 let EventFieldError = class EventFieldError {
 };
 __decorate([
@@ -64,7 +65,7 @@ class EventResolver {
         });
     }
     async getEvent(id) {
-        return Event_1.Event.findOne({
+        let event = await Event_1.Event.findOne({
             where: { id },
             relations: [
                 "creator",
@@ -74,6 +75,13 @@ class EventResolver {
                 "posts.comments",
             ],
         });
+        const posts = await Post_1.Post.find({
+            where: { eventId: event === null || event === void 0 ? void 0 : event.id },
+            order: { createdAt: "DESC" },
+            relations: ["creator", "event", "comments"],
+        });
+        event.posts = posts;
+        return event;
     }
 }
 __decorate([

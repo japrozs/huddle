@@ -5,6 +5,7 @@ import { Loading } from "../../../components/Loading";
 import { PostCard } from "../../../components/PostCard";
 
 import { HomeStackNav } from "./HomeNav";
+import { useApolloClient } from "@apollo/client";
 
 interface HomePageProps {}
 
@@ -13,6 +14,7 @@ export const HomePage: React.FC<HomeStackNav<"PostPage">> = ({
 }) => {
     const { data, loading } = useGetPostsQuery();
     const [refreshing, setRefreshing] = useState(false);
+    const client = useApolloClient();
     return (
         <SafeAreaView>
             {data ? (
@@ -29,6 +31,10 @@ export const HomePage: React.FC<HomeStackNav<"PostPage">> = ({
                         />
                     )}
                     keyExtractor={(item) => item.id.toString()}
+                    refreshing={refreshing}
+                    onRefresh={async () => {
+                        await client.resetStore();
+                    }}
                 />
             ) : (
                 <></>

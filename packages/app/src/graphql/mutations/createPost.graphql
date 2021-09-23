@@ -1,0 +1,5 @@
+mutation createPost($body: String!, $eventId: Int!) {
+    createPost(body: $body, eventId: $eventId) {
+        id
+    }
+}

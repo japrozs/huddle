@@ -12,6 +12,7 @@ import {
 import { Context } from "src/types";
 import { isAuth } from "../middleware/isAuth";
 import { validateEvent } from "../utils/validateEvent";
+import { Post } from "../entities/Post";
 
 @ObjectType()
 export class EventFieldError {
@@ -64,7 +65,7 @@ export class EventResolver {
     @UseMiddleware(isAuth)
     @Query(() => Event)
     async getEvent(@Arg("id", () => Int) id: number) {
-        return Event.findOne({
+        let event = await Event.findOne({
             where: { id },
             relations: [
                 "creator",
@@ -74,5 +75,12 @@ export class EventResolver {
                 "posts.comments",
             ],
         });
+        const posts = await Post.find({
+            where: { eventId: event?.id },
+            order: { createdAt: "DESC" },
+            relations: ["creator", "event", "comments"],
+        });
+        event!.posts = posts;
+        return event;
     }
 }

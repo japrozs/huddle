@@ -37,8 +37,8 @@ export const InputField: React.FC<FieldProps> = ({
                     styles.input,
                     {
                         borderColor: errors.hasOwnProperty(name)
-                            ? colors.errorRed
-                            : colors.inputBorder,
+                            ? theme.red
+                            : theme.borderColor,
                     },
                 ]}
             />
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
     },
     label: {
-        color: colors.textColor,
+        color: theme.grayDark,
         fontFamily: fonts.inter_600,
         fontSize: 20,
         fontWeight: "600",

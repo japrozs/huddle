@@ -6,13 +6,14 @@ import { SelfProfileStack } from "./main/SelfProfileStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors, fonts, layout, theme } from "../theme";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
-import { Image } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useApolloClient } from "@apollo/client";
 import { ProfileImage } from "../components/ProfileImage";
 import { Search } from "./main/Search";
+import { NewEvent } from "./main/NewEvent";
 
 interface MainStackProps {}
 
@@ -78,6 +79,30 @@ export const MainStack: React.FC<MainStackProps> = ({}) => {
             />
             <Tab.Screen
                 options={{
+                    headerTitle: "",
+                    headerLeft: () => (
+                        <Image
+                            style={styles.headerImg}
+                            source={require("../../assets/icons/huddle.png")}
+                        />
+                    ),
+                    tabBarIcon: ({ focused }) => (
+                        <AntDesign
+                            name="plus"
+                            size={layout.iconSize}
+                            color={
+                                focused
+                                    ? colors.navigation.active
+                                    : colors.navigation.inActive
+                            }
+                        />
+                    ),
+                }}
+                name="NewEvent"
+                component={NewEvent}
+            />
+            <Tab.Screen
+                options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <View
@@ -110,3 +135,12 @@ export const MainStack: React.FC<MainStackProps> = ({}) => {
         </Tab.Navigator>
     );
 };
+
+const styles = StyleSheet.create({
+    headerImg: {
+        height: 35,
+        width: 90,
+        marginLeft: 10,
+        alignSelf: "center",
+    },
+});

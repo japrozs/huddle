@@ -21,8 +21,8 @@ const validateEvent = (name, tagLine, desc) => {
     if (desc.length <= 10) {
         return [
             {
-                field: "description",
-                message: "Length must be greater than description",
+                field: "desc",
+                message: "Length must be greater than 10",
             },
         ];
     }

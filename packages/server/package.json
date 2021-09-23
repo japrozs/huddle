@@ -6,6 +6,7 @@
     "scripts": {
         "test": "jest --watchAll",
         "watch": "tsc -w",
+        "build": "tsc",
         "dev": "nodemon dist/index.js",
         "gen-env": "gen-env-types .env -o src/env.d.ts -e ."
     },

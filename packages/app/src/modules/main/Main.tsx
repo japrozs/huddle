@@ -11,6 +11,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { PostPage } from "../shared/PostPage";
 import { UserPage } from "../shared/UserPage";
 import { EventPage } from "../shared/EventPage";
+import { CreatePost } from "../shared/CreatePost";
 
 interface MainProps {}
 const Stack = createStackNavigator<HomeNavParamList>();
@@ -71,6 +72,13 @@ export const Main: React.FC<MainProps> = ({}) => {
                 })}
                 name={"UserPage"}
                 component={UserPage}
+            />
+            <Stack.Screen
+                options={{
+                    headerTitle: "New Post",
+                }}
+                name={"CreatePost"}
+                component={CreatePost}
             />
             <Stack.Screen
                 options={({ route }) => ({

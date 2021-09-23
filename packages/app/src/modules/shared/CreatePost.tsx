@@ -8,21 +8,29 @@ import {
     TextInput,
     ScrollView,
 } from "react-native";
-import { constants, fonts, globalStyles, layout, theme } from "../../theme";
+import { fonts, globalStyles, layout, theme } from "../../theme";
 import { SearchStackNav } from "../main/search/SearchNav";
 import * as MediaLibrary from "expo-media-library";
 import { ImgCard } from "../../components/ImgCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import expoConstants from "expo-constants";
+import { useApolloClient } from "@apollo/client";
+import axios from "axios";
+import { HomeStackNav } from "../main/Home/HomeNav";
+import { useCreatePostMutation } from "../../generated/graphql";
 
 interface CreatePostProps {}
 
-type PropType = SearchStackNav<"CreatePost">;
+type PropType = SearchStackNav<"CreatePost"> | HomeStackNav<"CreatePost">;
 
-export const CreatePost: React.FC<PropType> = ({ route }) => {
+export const CreatePost: React.FC<PropType> = ({ route, navigation }) => {
     const [focus, setFocus] = useState(false);
     const [photos, setPhotos] = useState<MediaLibrary.Asset[] | []>([]);
+    const [photoUri, setPhotoUri] = useState("");
+    const [body, setBody] = useState("");
+    const client = useApolloClient();
+    const [createPost] = useCreatePostMutation();
+
     useEffect(() => {
         (async () => {
             const { status } = await MediaLibrary.requestPermissionsAsync();
@@ -42,7 +50,54 @@ export const CreatePost: React.FC<PropType> = ({ route }) => {
             setPhotos(albumData.assets);
         })();
     }, []);
-    const album = MediaLibrary;
+
+    const submit = async () => {
+        if (body.trim().length == 0) {
+            return;
+        }
+        if (photoUri.trim().length == 0) {
+            const res = await createPost({
+                variables: {
+                    body,
+                    eventId: route.params.id,
+                },
+            });
+        } else {
+            const formData = new FormData();
+            const file = {
+                uri: photoUri,
+                type: "image/jpg",
+                name: "photo-pic",
+            };
+            // @ts-ignore
+            formData.append("image", file);
+            formData.append("body", body);
+            formData.append("eventId", route.params.id.toString());
+            try {
+                const res = await axios.post(
+                    "http://localhost:4000/upload",
+                    formData,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+                console.log("here");
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        await client.resetStore();
+        // @ts-ignore
+        navigation.navigate("EventPage", {
+            id: route.params.id,
+            name: route.params.name,
+        });
+    };
+
     return (
         <View>
             <Image source={{ uri: route.params.imgUrl }} style={styles.img} />
@@ -62,6 +117,8 @@ export const CreatePost: React.FC<PropType> = ({ route }) => {
                 </View>
                 <Text style={styles.label}>Post Body</Text>
                 <TextInput
+                    value={body}
+                    onChangeText={(t) => setBody(t)}
                     onBlur={() => setFocus(false)}
                     onFocus={() => setFocus(true)}
                     placeholder={"Post body"}
@@ -76,10 +133,23 @@ export const CreatePost: React.FC<PropType> = ({ route }) => {
                         />
                     </View>
                     {photos.map((photo) => (
-                        <ImgCard key={photo.id} imgUri={photo.uri} />
+                        <TouchableOpacity
+                            key={photo.id}
+                            activeOpacity={1}
+                            onPress={() => {
+                                setPhotoUri(photo.uri);
+                            }}
+                        >
+                            <ImgCard
+                                imgUri={photo.uri}
+                                isSelected={photoUri == photo.uri}
+                            />
+                        </TouchableOpacity>
                     ))}
                 </ScrollView>
                 <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={submit}
                     style={[globalStyles.button, { marginTop: 100 }]}
                 >
                     <Text style={globalStyles.buttonText}>Create post</Text>

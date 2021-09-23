@@ -5,7 +5,7 @@ export type MainStackParamList = {
     Home: undefined;
     SelfProfile: undefined;
     Search: undefined;
-    NewPost: undefined;
+    NewEvent: undefined;
 };
 
 export type MainStackNav<RouteName extends keyof MainStackParamList> = {

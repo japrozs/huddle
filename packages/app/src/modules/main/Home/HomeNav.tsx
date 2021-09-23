@@ -10,7 +10,11 @@ export type HomeNavParamList = {
         id: number;
         name: string;
     };
-    CreatePost: undefined;
+    CreatePost: {
+        id: number;
+        imgUrl: string;
+        name: string;
+    };
     UserPage: {
         id: number;
         name: string;

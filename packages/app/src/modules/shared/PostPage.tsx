@@ -15,10 +15,14 @@ import { colors, fonts, globalStyles, layout, theme } from "../../theme";
 import { timeSinceShort } from "../../utils/timeSince";
 import { HomeStackNav } from "../main/Home/HomeNav";
 import { SearchStackNav } from "../main/search/SearchNav";
+import { SelfProfileStackNav } from "../main/selfProfile/selfProfileNav";
 
 interface PostPageProps {}
 
-export type PropType = SearchStackNav<"PostPage"> | HomeStackNav<"PostPage">;
+export type PropType =
+    | SearchStackNav<"PostPage">
+    | HomeStackNav<"PostPage">
+    | SelfProfileStackNav<"EventPage">;
 
 export const PostPage: React.FC<PropType> = ({ route, navigation }) => {
     const { data, loading } = useGetPostQuery({

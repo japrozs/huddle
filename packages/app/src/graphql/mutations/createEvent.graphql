@@ -1,0 +1,14 @@
+mutation createEvent($name: String!, $tagLine: String!, $desc: String!) {
+    createEvent(name: $name, tagLine: $tagLine, desc: $desc) {
+        errors {
+            field
+            message
+        }
+        event {
+            id
+            name
+            imgUrl
+            tagLine
+        }
+    }
+}

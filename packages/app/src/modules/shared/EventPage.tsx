@@ -1,4 +1,5 @@
-import React from "react";
+import { useApolloClient } from "@apollo/client";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Dimensions,
     FlatList,
@@ -12,18 +13,31 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { PostCard } from "../../components/PostCard";
 import { useGetEventQuery } from "../../generated/graphql";
 import { colors, fonts, globalStyles } from "../../theme";
+import { HomeStackNav } from "../main/Home/HomeNav";
 import { SearchStackNav } from "../main/search/SearchNav";
+import { SelfProfileStackNav } from "../main/selfProfile/selfProfileNav";
 
 interface EventPageProps {}
 
-export type PropType = SearchStackNav<"EventPage">;
+export type PropType =
+    | SearchStackNav<"EventPage">
+    | HomeStackNav<"EventPage">
+    | SelfProfileStackNav<"EventPage">;
 
 export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
-    const { data, loading } = useGetEventQuery({
+    let { data, loading } = useGetEventQuery({
         variables: {
             id: route.params.id,
         },
     });
+    const [refreshing, setRefreshing] = useState(false);
+
+    const client = useApolloClient();
+
+    const refresh = async () => {
+        await client.resetStore();
+    };
+
     return (
         <SafeAreaView>
             {data ? (
@@ -33,6 +47,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                         <PostCard
                             post={item}
                             onPress={() => {
+                                // @ts-ignore
                                 navigation.navigate("PostPage", {
                                     id: item.id,
                                 });
@@ -69,6 +84,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => {
+                                        // @ts-ignore
                                         navigation.navigate("CreatePost", {
                                             id: data?.getEvent.id || 0,
                                             imgUrl: data?.getEvent.imgUrl || "",
@@ -87,6 +103,8 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                             </View>
                         </>
                     )}
+                    refreshing={refreshing}
+                    onRefresh={refresh}
                 />
             ) : (
                 <></>

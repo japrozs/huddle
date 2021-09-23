@@ -1,14 +1,24 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { theme } from "../theme";
 
 interface ImgCardProps {
     imgUri: string;
+    isSelected: boolean;
 }
 
-export const ImgCard: React.FC<ImgCardProps> = ({ imgUri }) => {
+export const ImgCard: React.FC<ImgCardProps> = ({ imgUri, isSelected }) => {
     return (
         <View>
-            <Image source={{ uri: imgUri }} style={styles.img} />
+            <Image
+                source={{ uri: imgUri }}
+                style={[
+                    styles.img,
+                    isSelected
+                        ? { borderColor: theme.turqoise, borderWidth: 3 }
+                        : {},
+                ]}
+            />
         </View>
     );
 };
