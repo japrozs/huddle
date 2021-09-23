@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { fonts, theme } from "../../../../theme";
+import { AccountData } from "./AccountData";
 import { SettingsMainPage } from "./settings";
 import { SettingsNavParamList } from "./settingsNav";
 
@@ -30,6 +31,13 @@ export const settingsStack: React.FC<settingsStackProps> = ({}) => {
                 }}
                 name={"SettingsMainPage"}
                 component={SettingsMainPage}
+            />
+            <Stack.Screen
+                options={{
+                    headerTitle: "Account Data",
+                }}
+                name={"AccountData"}
+                component={AccountData}
             />
         </Stack.Navigator>
     );

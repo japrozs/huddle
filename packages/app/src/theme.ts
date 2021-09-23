@@ -42,6 +42,7 @@ export const fonts = {
     inter_700: "Inter 700",
     inter_800: "Inter 800",
     inter_900: "Inter 900",
+    menlo: "Menlo",
 };
 
 const iconSize = 25;

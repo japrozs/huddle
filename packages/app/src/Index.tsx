@@ -16,8 +16,6 @@ import {
 import { Loading } from "./components/Loading";
 import { Routes } from "./Routes";
 
-
-
 const client = new ApolloClient({
     uri: "http://192.168.1.5:4000/graphql",
     credentials: "include",
@@ -35,6 +33,7 @@ export const Index = () => {
         "Inter 700": Inter_700Bold,
         "Inter 800": Inter_800ExtraBold,
         "Inter 900": Inter_900Black,
+        Menlo: require("../assets/fonts/Menlo.ttf"),
     });
 
     if (!fontsLoaded) {
