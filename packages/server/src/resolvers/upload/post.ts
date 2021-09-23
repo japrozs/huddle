@@ -1,18 +1,29 @@
 import { Router } from "express";
 import multer, { FileFilterCallback } from "multer";
-import path from "path";
+import aws from "aws-sdk";
 import { Post } from "../../entities/Post";
 import { expressIsAuth } from "../../middleware/isAuth";
 import { v4 } from "uuid";
+import multers3 from "multer-s3";
 
 const router = Router();
 
+const ENDPOINT = new aws.Endpoint(process.env.DO_ENDPOINT);
+
+const s3 = new aws.S3({
+    endpoint: ENDPOINT,
+    accessKeyId: process.env.DO_ACCESS_KEY_ID,
+    secretAccessKey: process.env.DO_SECRET_ACCESS_KEY,
+});
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: path.join(__dirname, "../../../images/posts"),
-        filename: async (_: any, _file: any, callback: any) => {
+    storage: multers3({
+        s3,
+        bucket: "huddle-pictures",
+        acl: "public-read",
+        key: async (_: any, _file: any, cb: any) => {
             const name = await v4();
-            callback(null, name + ".jpg"); // e.g. jh34gh2v4y + .jpg
+            cb(null, "posts/" + name + ".jpg"); // e.g. jh34gh2v4y + .jpg
         },
     }),
     fileFilter: (_, file: any, callback: FileFilterCallback) => {
@@ -34,7 +45,7 @@ router.post(
             creatorId: req.session.userId,
             body: req.body.body,
             eventId: req.body.eventId,
-            imgUrl: `http://192.168.1.5:4000/images/posts/${req.file?.filename}`,
+            imgUrl: (req.file as any).location,
         }).save();
         console.log(req.file);
         return res.json({ success: true });

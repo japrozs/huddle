@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { fonts, theme } from "../../../../theme";
 import { AccountData } from "./AccountData";
+import { PrivacyPolicy } from "./PrivacyPolicy";
 import { SettingsMainPage } from "./settings";
 import { SettingsNavParamList } from "./settingsNav";
 
@@ -38,6 +39,13 @@ export const settingsStack: React.FC<settingsStackProps> = ({}) => {
                 }}
                 name={"AccountData"}
                 component={AccountData}
+            />
+            <Stack.Screen
+                options={{
+                    headerTitle: "Privacy Policy",
+                }}
+                name={"PrivacyPolicy"}
+                component={PrivacyPolicy}
             />
         </Stack.Navigator>
     );

@@ -4,6 +4,7 @@ import { RouteProp } from "@react-navigation/native";
 export type SettingsNavParamList = {
     SettingsMainPage: undefined;
     AccountData: undefined;
+    PrivacyPolicy: undefined;
 };
 
 export type SettingsStackNav<RouteName extends keyof SettingsNavParamList> = {
