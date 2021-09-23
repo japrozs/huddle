@@ -28,9 +28,9 @@ Building the figma elements into different components.
 
 ## Functional components
 
--   [ ] Upload images to the google cloud storage
+-   [x] Upload images to the google cloud storage
 
--   [ ] Create Post page
+-   [x] Create Post page
 
 -   [ ] Settings page
 

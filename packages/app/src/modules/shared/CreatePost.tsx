@@ -90,12 +90,12 @@ export const CreatePost: React.FC<PropType> = ({ route, navigation }) => {
             }
         }
 
-        await client.resetStore();
         // @ts-ignore
         navigation.navigate("EventPage", {
             id: route.params.id,
             name: route.params.name,
         });
+        await client.resetStore();
     };
 
     return (
