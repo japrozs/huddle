@@ -7,9 +7,18 @@ export type SelfProfileStackParamList = {
         id: number;
         name: string;
     };
-    CreatePost: undefined;
+    SettingsPage: undefined;
+    CreatePost: {
+        id: number;
+        imgUrl: string;
+        name: string;
+    };
     PostPage: {
         id: number;
+    };
+    UserPage: {
+        id: number;
+        name: string;
     };
 };
 

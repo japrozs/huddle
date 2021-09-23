@@ -22,7 +22,7 @@ interface PostPageProps {}
 export type PropType =
     | SearchStackNav<"PostPage">
     | HomeStackNav<"PostPage">
-    | SelfProfileStackNav<"EventPage">;
+    | SelfProfileStackNav<"PostPage">;
 
 export const PostPage: React.FC<PropType> = ({ route, navigation }) => {
     const { data, loading } = useGetPostQuery({
