@@ -16,7 +16,7 @@ import {
 import { Loading } from "./components/Loading";
 import { Routes } from "./Routes";
 
-interface IndexProps {}
+
 
 const client = new ApolloClient({
     uri: "http://192.168.1.5:4000/graphql",
@@ -24,7 +24,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-export const Index: React.FC<IndexProps> = () => {
+export const Index = () => {
     const [fontsLoaded] = useFonts({
         "Inter 100": Inter_100Thin,
         "Inter 200": Inter_200ExtraLight,

@@ -64,7 +64,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
                         >
                             <Text style={styles.eventName}>{result.name}</Text>
                             <Text style={styles.description}>
-                                {truncate(result.tagLine || "", 28)}
+                                {truncate(result.tagLine || "", 30)}
                             </Text>
                         </View>
                     ) : (
@@ -79,6 +79,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
 const styles = StyleSheet.create({
     container: {
         padding: 15,
+        paddingBottom: 0,
         backgroundColor: "#fff",
     },
     card: {
@@ -95,8 +96,8 @@ const styles = StyleSheet.create({
     description: {
         color: colors.inputBorder,
         fontFamily: fonts.inter_500,
-        paddingTop: 0,
-        fontSize: 18,
+        marginTop: -3,
+        fontSize: 16,
     },
 
     icon: {
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.inter_600,
     },
     eventName: {
-        fontSize: 20,
+        fontSize: 18,
         color: "#000",
         fontFamily: fonts.inter_600,
         fontWeight: "600",

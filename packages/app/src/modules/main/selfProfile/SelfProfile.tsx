@@ -1,5 +1,13 @@
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Image,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SvgUri } from "react-native-svg";
 import { PostCard } from "../../../components/PostCard";
@@ -12,7 +20,7 @@ import { Event, Post } from "../../../generated/graphql";
 
 interface UserPageProps {}
 
-export type PropType = SelfProfileStackNav<"SelfProfile">;
+export type PropType = SelfProfileStackNav<"SelfProfilePage">;
 
 export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
     const { data: d } = useMeQuery();
@@ -23,57 +31,71 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
     });
     console.log("data from user page : ", data);
     return (
-        <ScrollView>
-            <View style={{ padding: 12 }}>
-                <View style={[globalStyles.flex]}>
-                    <View style={styles.img}>
-                        <ProfileImage
-                            imgUrl={data?.getUser.imgUrl}
-                            variant={"regular"}
-                        />
-                    </View>
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.name}>{data?.getUser.name}</Text>
-                        <Text style={styles.username}>
-                            @{data?.getUser.username}
-                        </Text>
-                    </View>
-                </View>
-                <Text style={[globalStyles.heading, styles.heading]}>
-                    EVENTS
-                </Text>
-                <ScrollView horizontal={true}>
-                    {data?.getUser.events.map((event: any) => (
-                        <TouchableOpacity
+        <SafeAreaView>
+            {data ? (
+                <FlatList
+                    data={data.getUser.posts}
+                    renderItem={({ item }) => (
+                        <PostCard
+                            post={item}
                             onPress={() => {
-                                navigation.navigate("EventPage", {
-                                    id: event.id,
-                                    name: event.name,
+                                navigation.navigate("PostPage", {
+                                    id: item.id,
                                 });
                             }}
-                            key={event.id}
-                        >
-                            <EventCard event={event} />
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-                <Text style={[globalStyles.heading, styles.heading]}>
-                    POSTS
-                </Text>
-            </View>
-            {data?.getUser.posts.map((post: any) => (
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("PostPage", {
-                            id: post.id,
-                        });
-                    }}
-                    key={post.id}
-                >
-                    <PostCard post={post} />
-                </TouchableOpacity>
-            ))}
-        </ScrollView>
+                        />
+                    )}
+                    keyExtractor={(item) => item.id.toString()}
+                    ListHeaderComponent={() => (
+                        <View style={{ padding: 12 }}>
+                            <View style={[globalStyles.flex]}>
+                                <View style={styles.img}>
+                                    <ProfileImage
+                                        imgUrl={data?.getUser.imgUrl}
+                                        variant={"regular"}
+                                    />
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.name}>
+                                        {data?.getUser.name}
+                                    </Text>
+                                    <Text style={styles.username}>
+                                        @{data?.getUser.username}
+                                    </Text>
+                                </View>
+                            </View>
+                            <Text
+                                style={[globalStyles.heading, styles.heading]}
+                            >
+                                EVENTS
+                            </Text>
+                            <ScrollView horizontal={true}>
+                                {data?.getUser.events.map((event: any) => (
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.navigate("EventPage", {
+                                                id: event.id,
+                                                name: event.name,
+                                            });
+                                        }}
+                                        key={event.id}
+                                    >
+                                        <EventCard event={event} />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                            <Text
+                                style={[globalStyles.heading, styles.heading]}
+                            >
+                                POSTS
+                            </Text>
+                        </View>
+                    )}
+                />
+            ) : (
+                <></>
+            )}
+        </SafeAreaView>
     );
 };
 

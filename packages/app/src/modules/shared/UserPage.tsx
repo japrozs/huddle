@@ -1,6 +1,13 @@
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+    Image,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { SvgUri } from "react-native-svg";
 import { EventCard } from "../../components/EventCard";
 import { PostCard } from "../../components/PostCard";
@@ -24,81 +31,95 @@ export const UserPage: React.FC<PropType> = ({ route, navigation }) => {
     });
     console.log("data from user page : ", data);
     return (
-        <ScrollView>
-            <View style={{ padding: 12 }}>
-                <View style={[globalStyles.flex]}>
-                    <View style={styles.img}>
-                        <ProfileImage
-                            imgUrl={data?.getUser.imgUrl}
-                            variant={"regular"}
-                        />
-                    </View>
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.name}>{data?.getUser.name}</Text>
-                        <View style={globalStyles.flex}>
-                            <MaterialIcons
-                                name="alternate-email"
-                                size={19}
-                                color={theme.grayDark}
-                            />
-                            <Text style={styles.username}>
-                                {data?.getUser.username}
-                            </Text>
-                        </View>
-                        <View style={globalStyles.flex}>
-                            <MaterialIcons
-                                name="cake"
-                                size={19}
-                                color={theme.grayDark}
-                            />
-                            <Text style={styles.date}>Joined</Text>
-                            <Text
-                                style={[
-                                    styles.date,
-                                    { fontFamily: fonts.inter_600 },
-                                ]}
-                            >
-                                {timeSince(data?.getUser.createdAt)}
-                            </Text>
-                            <Text style={styles.date}>ago</Text>
-                        </View>
-                    </View>
-                </View>
-                <Text style={[globalStyles.heading, styles.heading]}>
-                    EVENTS
-                </Text>
-                <ScrollView horizontal={true}>
-                    {data?.getUser.events.map((event) => (
-                        <TouchableOpacity
+        <SafeAreaView>
+            {data ? (
+                <FlatList
+                    data={data.getUser.posts}
+                    renderItem={({ item }) => (
+                        <PostCard
+                            post={item}
                             onPress={() => {
-                                navigation.navigate("EventPage", {
-                                    id: event.id,
-                                    name: event.name,
+                                navigation.navigate("PostPage", {
+                                    id: item.id,
                                 });
                             }}
-                            key={event.id}
-                        >
-                            <EventCard event={event} />
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-                <Text style={[globalStyles.heading, styles.heading]}>
-                    POSTS
-                </Text>
-            </View>
-            {data?.getUser.posts.map((post) => (
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("PostPage", {
-                            id: post.id,
-                        });
-                    }}
-                    key={post.id}
-                >
-                    <PostCard post={post} />
-                </TouchableOpacity>
-            ))}
-        </ScrollView>
+                        />
+                    )}
+                    keyExtractor={(item) => item.id.toString()}
+                    ListHeaderComponent={() => (
+                        <View style={{ padding: 12 }}>
+                            <View style={[globalStyles.flex]}>
+                                <View style={styles.img}>
+                                    <ProfileImage
+                                        imgUrl={data?.getUser.imgUrl}
+                                        variant={"regular"}
+                                    />
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.name}>
+                                        {data?.getUser.name}
+                                    </Text>
+                                    <View style={globalStyles.flex}>
+                                        <MaterialIcons
+                                            name="alternate-email"
+                                            size={19}
+                                            color={theme.grayDark}
+                                        />
+                                        <Text style={styles.username}>
+                                            {data?.getUser.username}
+                                        </Text>
+                                    </View>
+                                    <View style={globalStyles.flex}>
+                                        <MaterialIcons
+                                            name="cake"
+                                            size={19}
+                                            color={theme.grayDark}
+                                        />
+                                        <Text style={styles.date}>Joined</Text>
+                                        <Text
+                                            style={[
+                                                styles.date,
+                                                { fontFamily: fonts.inter_600 },
+                                            ]}
+                                        >
+                                            {timeSince(data?.getUser.createdAt)}
+                                        </Text>
+                                        <Text style={styles.date}>ago</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <Text
+                                style={[globalStyles.heading, styles.heading]}
+                            >
+                                EVENTS
+                            </Text>
+                            <ScrollView horizontal={true}>
+                                {data?.getUser.events.map((event) => (
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.navigate("EventPage", {
+                                                id: event.id,
+                                                name: event.name,
+                                            });
+                                        }}
+                                        key={event.id}
+                                    >
+                                        <EventCard event={event} />
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                            <Text
+                                style={[globalStyles.heading, styles.heading]}
+                            >
+                                POSTS
+                            </Text>
+                        </View>
+                    )}
+                />
+            ) : (
+                <></>
+            )}
+        </SafeAreaView>
     );
 };
 

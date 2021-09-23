@@ -50,8 +50,8 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
             break;
         }
         case "search": {
-            width = 50;
-            height = 50;
+            width = 40;
+            height = 40;
             break;
         }
     }

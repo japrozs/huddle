@@ -83,11 +83,10 @@ const styles = StyleSheet.create({
     },
     input: {
         marginLeft: 10,
-
         height: "100%",
         width: "100%",
         color: colors.buttonBackgroundColor,
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: fonts.inter_500,
     },
 });

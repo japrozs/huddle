@@ -13,48 +13,59 @@ import { ProfileImage } from "../components/ProfileImage";
 import { timeSinceShort } from "../utils/timeSince";
 import { MaterialIcons } from "@expo/vector-icons";
 import { truncate } from "../utils/truncate";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface PostCardProps {
     post: any;
+    onPress: any;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post }) => {
+export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
     return (
         <View style={styles.mainContainer}>
-            <View style={[globalStyles.flex, styles.container]}>
-                <View style={styles.imgContainer}>
-                    <ProfileImage
-                        imgUrl={post.creator.imgUrl}
-                        variant={"post"}
-                    />
-                </View>
-                <View style={globalStyles.flex}>
-                    <Text style={styles.username}>{post.creator.username}</Text>
-                    <Text style={styles.event}>
-                        {" "}
-                        • {post.event.name.toLowerCase()}
+            <TouchableOpacity
+                activeOpacity={constants.ACTIVE_OPACITY}
+                onPress={onPress}
+            >
+                <View style={[globalStyles.flex, styles.container]}>
+                    <View style={styles.imgContainer}>
+                        <ProfileImage
+                            imgUrl={post.creator.imgUrl}
+                            variant={"post"}
+                        />
+                    </View>
+                    <View style={globalStyles.flex}>
+                        <Text style={styles.username}>
+                            {post.creator.username}
+                        </Text>
+                        <Text style={styles.event}>
+                            {" "}
+                            • {post.event.name.toLowerCase()}
+                        </Text>
+                    </View>
+                    <Text style={styles.date}>
+                        {timeSinceShort(post.createdAt)}
                     </Text>
                 </View>
-                <Text style={styles.date}>
-                    {timeSinceShort(post.createdAt)}
-                </Text>
-            </View>
+            </TouchableOpacity>
 
             {post.imgUrl.trim().length == 0 ? (
                 <Text
                     style={{
-                        fontSize: 24,
+                        fontSize: 21,
                         fontFamily: fonts.inter_600,
                         paddingHorizontal: 13,
                         paddingVertical: 7,
                         paddingBottom: 13,
                     }}
+                    onPress={onPress}
                 >
                     {truncate(post.body, constants.POST_BODY_TRUNCATE_LENGTH)}
                 </Text>
             ) : (
                 <>
                     <Text
+                        onPress={onPress}
                         style={{
                             fontSize: 19,
                             fontFamily: fonts.inter_600,
@@ -68,12 +79,17 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                             constants.POST_BODY_TRUNCATE_LENGTH
                         )}
                     </Text>
-                    <Image
-                        style={styles.img}
-                        source={{
-                            uri: post.imgUrl,
-                        }}
-                    />
+                    <TouchableOpacity
+                        activeOpacity={constants.ACTIVE_OPACITY}
+                        onPress={onPress}
+                    >
+                        <Image
+                            style={styles.img}
+                            source={{
+                                uri: post.imgUrl,
+                            }}
+                        />
+                    </TouchableOpacity>
                 </>
             )}
             <View style={[globalStyles.flex, styles.iconContainer]}>
@@ -81,14 +97,18 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                     name="thumb-up-off-alt"
                     size={layout.iconSize}
                     color={theme.grayDark}
+                    onPress={() => alert("you just liked this post!")}
                 />
                 <Text style={styles.likes}>{post?.likes}</Text>
                 <MaterialIcons
+                    onPress={onPress}
                     name="insert-comment"
                     size={layout.iconSize}
                     color={theme.grayDark}
                 />
-                <Text style={styles.comments}>{post?.comments?.length}</Text>
+                <Text onPress={onPress} style={styles.comments}>
+                    {post?.comments?.length}
+                </Text>
             </View>
         </View>
     );
