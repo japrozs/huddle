@@ -1,10 +1,16 @@
 import { useApolloClient } from "@apollo/client";
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    ActivityIndicator,
+    ScrollView,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { InputField } from "../../components/InputField";
 import { useCreateEventMutation } from "../../generated/graphql";
-import { fonts, globalStyles } from "../../theme";
+import { fonts, globalStyles, theme } from "../../theme";
 import { errorToMap } from "../../utils/errorToMap";
 import { MainStackNav } from "./MainNav";
 
@@ -25,8 +31,10 @@ export const NewEvent: React.FC<MainStackNav<"NewEvent">> = ({
     const [errors, setErrors] = useState<ErrorProps>({});
     const [createEvent] = useCreateEventMutation();
     const client = useApolloClient();
+    const [isLoading, setIsLoading] = useState(false);
 
     const submit = async () => {
+        setIsLoading(true);
         const res = await createEvent({
             variables: {
                 name,
@@ -38,11 +46,12 @@ export const NewEvent: React.FC<MainStackNav<"NewEvent">> = ({
             return setErrors(errorToMap(res.data?.createEvent.errors));
         }
         await client.resetStore();
+        setIsLoading(false);
         navigation.navigate("Home");
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.heading}>Create new event</Text>
             <InputField
                 errors={errors}
@@ -69,10 +78,25 @@ export const NewEvent: React.FC<MainStackNav<"NewEvent">> = ({
                 placeholder={"Description"}
             />
             <View style={{ marginTop: 100 }}></View>
-            <TouchableOpacity onPress={submit} style={globalStyles.button}>
-                <Text style={globalStyles.buttonText}>Create new event</Text>
-            </TouchableOpacity>
-        </View>
+            {!isLoading ? (
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={submit}
+                    style={globalStyles.button}
+                >
+                    <Text style={globalStyles.buttonText}>
+                        Create new event
+                    </Text>
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity activeOpacity={1} style={globalStyles.button}>
+                    <ActivityIndicator
+                        size={"large"}
+                        color={theme.backgroundColor}
+                    />
+                </TouchableOpacity>
+            )}
+        </ScrollView>
     );
 };
 

@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { InputField } from "../../components/InputField";
 import { useLoginMutation } from "../../generated/graphql";
-import { fonts, globalStyles } from "../../theme";
+import { fonts, globalStyles, theme } from "../../theme";
 import { errorToMap } from "../../utils/errorToMap";
 import Constants from "expo-constants";
+import { AuthStackNav } from "./AuthNav";
 
 interface LoginProps {}
 interface ErrorProps {
@@ -13,7 +14,7 @@ interface ErrorProps {
     password?: string;
 }
 
-export const Login: React.FC<LoginProps> = ({}) => {
+export const Login: React.FC<AuthStackNav<"Login">> = ({ navigation }) => {
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState<ErrorProps>({});
@@ -52,6 +53,34 @@ export const Login: React.FC<LoginProps> = ({}) => {
                 setter={setPassword}
                 errors={errors}
             />
+            <View
+                style={[
+                    globalStyles.flex,
+                    { alignSelf: "center", marginTop: 12 },
+                ]}
+            >
+                <Text
+                    style={{
+                        fontSize: 16,
+                        fontFamily: fonts.inter_500,
+                        color: theme.gray,
+                    }}
+                >
+                    Dont have an account?{" "}
+                </Text>
+                <Text
+                    onPress={() => {
+                        navigation.navigate("Register");
+                    }}
+                    style={{
+                        fontSize: 16,
+                        fontFamily: fonts.inter_600,
+                        color: theme.gray,
+                    }}
+                >
+                    Register
+                </Text>
+            </View>
             <TouchableOpacity
                 onPress={login}
                 style={[globalStyles.button, styles.button]}
@@ -64,7 +93,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        padding: 15,
         height: "100%",
     },
     button: {

@@ -100,6 +100,11 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                 <Text style={globalStyles.heading}>
                                     RECENT POSTS
                                 </Text>
+                                {data && data?.getEvent.posts.length == 0 ? (
+                                    <Text>there are no posts</Text>
+                                ) : (
+                                    <></>
+                                )}
                             </View>
                         </>
                     )}

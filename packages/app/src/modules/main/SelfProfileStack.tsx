@@ -12,13 +12,17 @@ import { colors, fonts, theme } from "../../theme";
 import { UserPage } from "../shared/UserPage";
 import { CreatePost } from "../shared/CreatePost";
 import { settingsStack } from "./selfProfile/settings/settingsStack";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useLogoutMutation } from "../../generated/graphql";
+import { useApolloClient } from "@apollo/client";
 
 interface SelfProfileProps {}
 
 const Stack = createStackNavigator<SelfProfileStackParamList>();
 
 export const SelfProfileStack: React.FC<SelfProfileProps> = ({}) => {
+    const [logout] = useLogoutMutation();
+    const client = useApolloClient();
     return (
         <Stack.Navigator
             screenOptions={{
@@ -38,7 +42,19 @@ export const SelfProfileStack: React.FC<SelfProfileProps> = ({}) => {
                 options={({
                     navigation,
                 }: SelfProfileStackNav<"SelfProfilePage">) => ({
-                    headerTitle: "Profile",
+                    headerLeft: () => (
+                        <MaterialIcons
+                            name="logout"
+                            size={24 + 7}
+                            style={{ marginLeft: 10 }}
+                            color={theme.textColor}
+                            onPress={async () => {
+                                await logout();
+                                await client.resetStore();
+                            }}
+                        />
+                    ),
+                    headerTitle: "",
                     headerRight: () => (
                         <Ionicons
                             name="md-settings-sharp"

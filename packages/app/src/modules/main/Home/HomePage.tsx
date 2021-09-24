@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RefreshControl, SafeAreaView, FlatList } from "react-native";
+import { RefreshControl, SafeAreaView, FlatList, Text } from "react-native";
 import { useGetPostsQuery, useMeQuery } from "../../../generated/graphql";
 import { Loading } from "../../../components/Loading";
 import { PostCard } from "../../../components/PostCard";
@@ -40,6 +40,11 @@ export const HomePage: React.FC<HomeStackNav<"PostPage">> = ({
                 <></>
             )}
             {!data && loading ? <Loading /> : <></>}
+            {data && data?.getPosts.length == 0 ? (
+                <Text>there are no posts</Text>
+            ) : (
+                <></>
+            )}
         </SafeAreaView>
     );
 };

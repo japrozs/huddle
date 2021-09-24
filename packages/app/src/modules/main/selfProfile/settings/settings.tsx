@@ -7,7 +7,7 @@ import constants from "expo-constants";
 
 interface settingsProps {}
 
-const Footer = () => {
+export const HuddleFooter = () => {
     return (
         <>
             <Image
@@ -62,7 +62,7 @@ export const SettingsMainPage: React.FC<SettingsStackNav<"SettingsMainPage">> =
                     />
                     <OptionCard title={"History"} onPress={() => {}} />
                     <OptionCard title={"Security"} onPress={() => {}} />
-                    <OptionCard title={"Breaches"} onPress={() => {}} />
+                    <OptionCard title={"FAQs"} onPress={() => {}} />
                     <Text style={[globalStyles.heading, { padding: 13 }]}>
                         ACTIONS
                     </Text>
@@ -78,7 +78,7 @@ export const SettingsMainPage: React.FC<SettingsStackNav<"SettingsMainPage">> =
                         action={true}
                     />
                 </ScrollView>
-                <Footer />
+                <HuddleFooter />
             </View>
         );
     };
