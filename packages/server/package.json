@@ -32,6 +32,7 @@
         "aws-sdk": "^2.993.0",
         "connect-redis": "^6.0.0",
         "cors": "^2.8.5",
+        "dataloader": "^2.0.0",
         "dotenv-safe": "^8.2.0",
         "express": "^4.17.1",
         "express-session": "^1.17.2",

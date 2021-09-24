@@ -24,6 +24,8 @@ const post_2 = __importDefault(require("./resolvers/upload/post"));
 const Event_1 = require("./entities/Event");
 const event_1 = require("./resolvers/event");
 const comment_1 = require("./resolvers/comment");
+const Like_1 = require("./entities/Like");
+const createLikeLoader_1 = require("./utils/loaders/createLikeLoader");
 const main = async () => {
     const conn = await (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -33,7 +35,7 @@ const main = async () => {
         logging: true,
         migrations: [path_1.default.join(__dirname, "./migrations/*")],
         synchronize: true,
-        entities: [User_1.User, Post_1.Post, Event_1.Event, Comment_1.Comment],
+        entities: [User_1.User, Post_1.Post, Event_1.Event, Comment_1.Comment, Like_1.Like],
     });
     conn.runMigrations();
     const app = (0, express_1.default)();
@@ -71,7 +73,12 @@ const main = async () => {
             ],
             validate: false,
         }),
-        context: ({ req, res }) => ({ req, res, redis }),
+        context: ({ req, res }) => ({
+            req,
+            res,
+            redis,
+            likeLoader: (0, createLikeLoader_1.createLikeLoader)(),
+        }),
     });
     app.use("/", post_2.default);
     apolloServer.applyMiddleware({

@@ -15,6 +15,7 @@ const typeorm_1 = require("typeorm");
 const Event_1 = require("./Event");
 const User_1 = require("./User");
 const Comment_1 = require("./Comment");
+const Like_1 = require("./Like");
 let Post = class Post extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -62,6 +63,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Comment_1.Comment, (comment) => comment.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
+    __metadata("design:type", Object)
+], Post.prototype, "voteStatus", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Like_1.Like, (like) => like.post),
+    __metadata("design:type", Array)
+], Post.prototype, "likesRelation", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.CreateDateColumn)(),

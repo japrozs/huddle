@@ -16,7 +16,19 @@ exports.PostResolver = void 0;
 const Post_1 = require("../entities/Post");
 const type_graphql_1 = require("type-graphql");
 const isAuth_1 = require("../middleware/isAuth");
-class PostResolver {
+const Like_1 = require("../entities/Like");
+const typeorm_1 = require("typeorm");
+let PostResolver = class PostResolver {
+    async voteStatus(post, { likeLoader, req }) {
+        if (!req.session.userId) {
+            return null;
+        }
+        const like = await likeLoader.load({
+            postId: post.id,
+            userId: req.session.userId,
+        });
+        return like ? 1 : null;
+    }
     getPosts() {
         return Post_1.Post.find({
             relations: ["creator", "event", "comments"],
@@ -36,7 +48,45 @@ class PostResolver {
             relations: ["event", "creator", "comments", "comments.creator"],
         });
     }
-}
+    async like(postId, { req }) {
+        const { userId } = req.session;
+        const like = await Like_1.Like.findOne({ where: { userId, postId } });
+        if (like) {
+            await Like_1.Like.delete({ userId, postId });
+            await (0, typeorm_1.getConnection)().query(`
+            START TRANSACTION;
+            update post
+        set likes = likes - 1
+        where id = ${postId};
+
+        COMMIT;
+            `);
+        }
+        else {
+            await (0, typeorm_1.getConnection)().query(`
+        START TRANSACTION;
+
+        insert into "like" ("userId", "postId", "value")
+        values (${userId},${postId},1);
+
+        update post
+        set likes = likes + 1
+        where id = ${postId};
+
+        COMMIT;
+        `);
+        }
+        return true;
+    }
+};
+__decorate([
+    (0, type_graphql_1.FieldResolver)(() => type_graphql_1.Int, { nullable: true }),
+    __param(0, (0, type_graphql_1.Root)()),
+    __param(1, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Post_1.Post, Object]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "voteStatus", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [Post_1.Post]),
     __metadata("design:type", Function),
@@ -61,5 +111,17 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "getPost", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
+    __param(0, (0, type_graphql_1.Arg)("postId", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "like", null);
+PostResolver = __decorate([
+    (0, type_graphql_1.Resolver)(Post_1.Post)
+], PostResolver);
 exports.PostResolver = PostResolver;
 //# sourceMappingURL=post.js.map

@@ -65,6 +65,7 @@ export type Mutation = {
   createEvent: EventResponse;
   createPost: Post;
   forgotPassword: Scalars['Boolean'];
+  like: Scalars['Boolean'];
   login: UserResponse;
   logout?: Maybe<Scalars['Boolean']>;
   register: UserResponse;
@@ -101,6 +102,11 @@ export type MutationForgotPasswordArgs = {
 };
 
 
+export type MutationLikeArgs = {
+  postId: Scalars['Int'];
+};
+
+
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
@@ -124,6 +130,7 @@ export type Post = {
   imgUrl: Scalars['String'];
   likes: Scalars['Float'];
   updatedAt: Scalars['String'];
+  voteStatus?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -163,6 +170,7 @@ export type User = {
   bio: Scalars['String'];
   comments: Array<Comment>;
   createdAt: Scalars['String'];
+  deactivated: Scalars['Boolean'];
   email: Scalars['String'];
   events: Array<Event>;
   id: Scalars['Float'];
@@ -189,9 +197,9 @@ export type UsernamePasswordInput = {
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type RegularEventFragment = { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } };
+export type RegularEventFragment = { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } };
 
-export type RegularPostFragment = { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> };
+export type RegularPostFragment = { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> };
 
 export type RegularUserFragment = { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string };
 
@@ -221,6 +229,13 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number } };
+
+export type LikeMutationVariables = Exact<{
+  postId: Scalars['Int'];
+}>;
+
+
+export type LikeMutation = { __typename?: 'Mutation', like: boolean };
 
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
@@ -264,19 +279,19 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'Query', getEvent: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, createdAt: string, updatedAt: string, creatorId: number, eventId: number, likes: number, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } } };
+export type GetEventQuery = { __typename?: 'Query', getEvent: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, createdAt: string, updatedAt: string, creatorId: number, eventId: number, likes: number, voteStatus?: Maybe<number>, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } } };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', getPost: { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, createdAt: string, updatedAt: string, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string } } };
+export type GetPostQuery = { __typename?: 'Query', getPost: { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string } } };
 
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }> };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -314,6 +329,7 @@ export const RegularPostFragmentDoc = gql`
   }
   likes
   eventId
+  voteStatus
   event {
     id
     name
@@ -485,6 +501,37 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const LikeDocument = gql`
+    mutation Like($postId: Int!) {
+  like(postId: $postId)
+}
+    `;
+export type LikeMutationFn = Apollo.MutationFunction<LikeMutation, LikeMutationVariables>;
+
+/**
+ * __useLikeMutation__
+ *
+ * To run a mutation, you first call `useLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeMutation, { data, loading, error }] = useLikeMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useLikeMutation(baseOptions?: Apollo.MutationHookOptions<LikeMutation, LikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument, options);
+      }
+export type LikeMutationHookResult = ReturnType<typeof useLikeMutation>;
+export type LikeMutationResult = Apollo.MutationResult<LikeMutation>;
+export type LikeMutationOptions = Apollo.BaseMutationOptions<LikeMutation, LikeMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
@@ -713,6 +760,7 @@ export const GetEventDocument = gql`
       creatorId
       eventId
       likes
+      voteStatus
       comments {
         id
         body

@@ -8,6 +8,7 @@ fragment RegularPost on Post {
     }
     likes
     eventId
+    voteStatus
     event {
         id
         name

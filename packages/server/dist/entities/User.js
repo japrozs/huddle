@@ -16,6 +16,7 @@ const typeorm_1 = require("typeorm");
 const Event_1 = require("./Event");
 const Post_1 = require("./Post");
 const Comment_1 = require("./Comment");
+const Like_1 = require("./Like");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -69,9 +70,18 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "imgUrl", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "deactivated", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Like_1.Like, (like) => like.user),
+    __metadata("design:type", Array)
+], User.prototype, "likes", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.CreateDateColumn)(),

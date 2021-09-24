@@ -19,6 +19,8 @@ import postUpload from "./resolvers/upload/post";
 import { Event } from "./entities/Event";
 import { EventResolver } from "./resolvers/event";
 import { CommentResolver } from "./resolvers/comment";
+import { Like } from "./entities/Like";
+import { createLikeLoader } from "./utils/loaders/createLikeLoader";
 
 // rerun
 const main = async () => {
@@ -30,7 +32,7 @@ const main = async () => {
         logging: true,
         migrations: [path.join(__dirname, "./migrations/*")],
         synchronize: true, // set to false, when wiping the data (i.e. await Post.delete({}); )
-        entities: [User, Post, Event, Comment],
+        entities: [User, Post, Event, Comment, Like],
     });
     conn.runMigrations();
     const app = express();
@@ -75,7 +77,12 @@ const main = async () => {
             ],
             validate: false,
         }),
-        context: ({ req, res }) => ({ req, res, redis }),
+        context: ({ req, res }) => ({
+            req,
+            res,
+            redis,
+            likeLoader: createLikeLoader(),
+        }),
     });
 
     app.use("/", postUpload);

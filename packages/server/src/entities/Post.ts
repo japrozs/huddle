@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 import {
     Column,
     CreateDateColumn,
@@ -12,6 +12,7 @@ import {
 import { Event } from "./Event";
 import { User } from "./User";
 import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 @ObjectType()
 @Entity()
@@ -51,6 +52,12 @@ export class Post extends BaseEntity {
     @Field(() => [Comment])
     @OneToMany(() => Comment, (comment) => comment.post)
     comments: Comment[];
+
+    @Field(() => Int, { nullable: true })
+    voteStatus: number | null;
+
+    @OneToMany(() => Like, (like) => like.post)
+    likesRelation: Like[];
 
     @Field(() => String)
     @CreateDateColumn()

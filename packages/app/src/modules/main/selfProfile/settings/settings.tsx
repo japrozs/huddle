@@ -60,18 +60,11 @@ export const SettingsMainPage: React.FC<SettingsStackNav<"SettingsMainPage">> =
                             navigation.navigate("AccountData");
                         }}
                     />
-                    <OptionCard title={"History"} onPress={() => {}} />
                     <OptionCard title={"Security"} onPress={() => {}} />
                     <OptionCard title={"FAQs"} onPress={() => {}} />
                     <Text style={[globalStyles.heading, { padding: 13 }]}>
                         ACTIONS
                     </Text>
-                    <OptionCard
-                        title={"Delete account"}
-                        onPress={() => {}}
-                        style={{ borderTopWidth: 1 }}
-                        action={true}
-                    />
                     <OptionCard
                         title={"Deactivate account"}
                         onPress={() => {}}

@@ -12,6 +12,7 @@ import {
 import { Event } from "./Event";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 @ObjectType()
 @Entity()
@@ -56,8 +57,15 @@ export class User extends BaseEntity {
     @Column()
     imgUrl: string;
 
+    @Field()
+    @Column({ default: false })
+    deactivated: boolean;
+
     @Column()
     password: string;
+
+    @OneToMany(() => Like, (like) => like.user)
+    likes: Like[];
 
     @Field(() => String)
     @CreateDateColumn()

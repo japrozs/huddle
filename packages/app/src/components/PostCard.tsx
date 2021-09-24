@@ -14,6 +14,8 @@ import { timeSinceShort } from "../utils/timeSince";
 import { MaterialIcons } from "@expo/vector-icons";
 import { truncate } from "../utils/truncate";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useLikeMutation } from "../generated/graphql";
+import { useApolloClient } from "@apollo/client";
 
 interface PostCardProps {
     post: any;
@@ -21,6 +23,18 @@ interface PostCardProps {
 }
 
 export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
+    const [like] = useLikeMutation();
+    const client = useApolloClient();
+
+    const likeFn = async () => {
+        await like({
+            variables: {
+                postId: post?.id || 0,
+            },
+        });
+
+        await client.resetStore();
+    };
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity
@@ -93,12 +107,21 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
                 </>
             )}
             <View style={[globalStyles.flex, styles.iconContainer]}>
-                <MaterialIcons
-                    name="thumb-up-off-alt"
-                    size={layout.iconSize}
-                    color={theme.grayDark}
-                    onPress={() => alert("you just liked this post!")}
-                />
+                {post?.voteStatus == 1 ? (
+                    <MaterialIcons
+                        name="thumb-up-off-alt"
+                        size={layout.iconSize}
+                        color={theme.turqoise}
+                        onPress={() => likeFn()}
+                    />
+                ) : (
+                    <MaterialIcons
+                        name="thumb-up-off-alt"
+                        size={layout.iconSize}
+                        color={theme.grayDark}
+                        onPress={() => likeFn()}
+                    />
+                )}
                 <Text style={styles.likes}>{post?.likes}</Text>
                 <MaterialIcons
                     onPress={onPress}
