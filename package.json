@@ -6,7 +6,8 @@
         "version": "lerna version --conventional-commits --yes",
         "diff": "lerna diff",
         "since": "lerna run test --since",
-        "build": "lerna run build --scope={@huddle/server,@huddle/app}"
+        "build": "lerna run build --scope={@huddle/server,@huddle/app}",
+        "changed": "lerna changed packages/server"
     },
     "devDependencies": {
         "lerna": "^4.0.0"
