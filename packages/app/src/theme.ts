@@ -31,6 +31,7 @@ export const theme = {
     backgroundColor: "#FAFAFA",
     turqoise: "#15CDA8",
     blue: "#082246",
+    likeIconBorder: "#E5678D",
 };
 
 export const fonts = {

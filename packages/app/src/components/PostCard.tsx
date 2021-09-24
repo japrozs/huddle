@@ -108,30 +108,80 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
             )}
             <View style={[globalStyles.flex, styles.iconContainer]}>
                 {post?.voteStatus == 1 ? (
-                    <MaterialIcons
-                        name="thumb-up-off-alt"
-                        size={layout.iconSize}
-                        color={theme.turqoise}
-                        onPress={() => likeFn()}
-                    />
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={likeFn}
+                        style={[
+                            globalStyles.flex,
+                            styles.actionIconContainer,
+                            { borderColor: theme.likeIconBorder },
+                        ]}
+                    >
+                        <Image
+                            source={require("../../assets/icons/like.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                        <Text style={styles.likes}>{post?.likes}</Text>
+                    </TouchableOpacity>
                 ) : (
-                    <MaterialIcons
-                        name="thumb-up-off-alt"
-                        size={layout.iconSize}
-                        color={theme.grayDark}
-                        onPress={() => likeFn()}
-                    />
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={likeFn}
+                        style={[globalStyles.flex, styles.actionIconContainer]}
+                    >
+                        <Image
+                            source={require("../../assets/icons/like_gray.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                        <Text style={styles.likes}>{post?.likes}</Text>
+                    </TouchableOpacity>
                 )}
-                <Text style={styles.likes}>{post?.likes}</Text>
-                <MaterialIcons
-                    onPress={onPress}
-                    name="insert-comment"
-                    size={layout.iconSize}
-                    color={theme.grayDark}
-                />
-                <Text onPress={onPress} style={styles.comments}>
-                    {post?.comments?.length}
-                </Text>
+
+                {post?.comments?.length == 0 ? (
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={onPress}
+                        style={[globalStyles.flex, styles.actionIconContainer]}
+                    >
+                        <Image
+                            source={require("../../assets/icons/comment.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                        <Text onPress={onPress} style={styles.comments}>
+                            {post?.comments?.length}
+                        </Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={onPress}
+                        style={[
+                            globalStyles.flex,
+                            styles.actionIconContainer,
+                            { borderColor: "#2ABF39" },
+                        ]}
+                    >
+                        <Image
+                            source={require("../../assets/icons/comment.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                        <Text onPress={onPress} style={styles.comments}>
+                            {post?.comments?.length}
+                        </Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -186,7 +236,6 @@ const styles = StyleSheet.create({
     },
     likes: {
         marginLeft: 5,
-        marginRight: 20,
         fontSize: 18,
         fontFamily: fonts.inter_600,
         color: theme.grayDark,
@@ -196,5 +245,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: fonts.inter_600,
         color: theme.grayDark,
+    },
+    actionIconContainer: {
+        borderColor: theme.borderColor,
+        borderRadius: 4,
+        borderWidth: 1,
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        marginRight: 15,
     },
 });

@@ -18,6 +18,7 @@ import { SearchStackNav } from "../main/search/SearchNav";
 import { MaterialIcons } from "@expo/vector-icons";
 import { timeSince } from "../../utils/timeSince";
 import { HomeStackNav } from "../main/Home/HomeNav";
+import { Loading } from "../../components/Loading";
 
 interface UserPageProps {}
 
@@ -113,6 +114,12 @@ export const UserPage: React.FC<PropType> = ({ route, navigation }) => {
                             >
                                 POSTS
                             </Text>
+                            {!data && loading ? <Loading /> : <></>}
+                            {data && data?.getUser.posts.length == 0 ? (
+                                <Text>there are no posts</Text>
+                            ) : (
+                                <></>
+                            )}
                         </View>
                     )}
                 />
