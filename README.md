@@ -32,7 +32,7 @@ Building the figma elements into different components.
 
 -   [x] Create Post page
 
--   [ ] Settings page
+-   [x] Settings page
 
 ## Docs
 

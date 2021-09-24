@@ -7,8 +7,10 @@ import {
     Text,
     View,
 } from "react-native";
+import { ActionTray } from "../../components/ActionTray";
 import { CommentCard } from "../../components/CommentCard";
 import { CommentInput } from "../../components/CommentInput";
+import { PostMore } from "../../components/PostMore";
 import { ProfileImage } from "../../components/ProfileImage";
 import { useGetCommentsQuery, useGetPostQuery } from "../../generated/graphql";
 import { colors, fonts, globalStyles, layout, theme } from "../../theme";
@@ -91,12 +93,18 @@ export const PostPage: React.FC<PropType> = ({ route, navigation }) => {
                         >
                             {data?.getPost.body}
                         </Text>
-                        <Image
-                            style={styles.postImg}
-                            source={{ uri: data?.getPost.imgUrl }}
-                        />
+                        <View style={{ backgroundColor: theme.headingColor }}>
+                            <Image
+                                style={styles.postImg}
+                                source={{ uri: data?.getPost.imgUrl }}
+                            />
+                        </View>
                     </>
                 )}
+                <View style={[globalStyles.flex, styles.iconContainer]}>
+                    <ActionTray onPress={() => {}} post={data?.getPost} />
+                    <PostMore post={data?.getPost} />
+                </View>
                 <View style={{ padding: 12 }}>
                     <Text
                         style={[globalStyles.heading, { marginVertical: 10 }]}
@@ -134,5 +142,10 @@ const styles = StyleSheet.create({
     postImg: {
         width: Dimensions.get("screen").width,
         height: Dimensions.get("screen").width,
+    },
+    iconContainer: {
+        marginVertical: 10,
+        paddingHorizontal: 13,
+        marginBottom: 0,
     },
 });

@@ -16,6 +16,9 @@ import { truncate } from "../utils/truncate";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useLikeMutation } from "../generated/graphql";
 import { useApolloClient } from "@apollo/client";
+import { Feather } from "@expo/vector-icons";
+import { ActionTray } from "./ActionTray";
+import { PostMore } from "./PostMore";
 
 interface PostCardProps {
     post: any;
@@ -97,91 +100,20 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
                         activeOpacity={constants.ACTIVE_OPACITY}
                         onPress={onPress}
                     >
-                        <Image
-                            style={styles.img}
-                            source={{
-                                uri: post.imgUrl,
-                            }}
-                        />
+                        <View style={{ backgroundColor: theme.headingColor }}>
+                            <Image
+                                style={styles.img}
+                                source={{
+                                    uri: post.imgUrl,
+                                }}
+                            />
+                        </View>
                     </TouchableOpacity>
                 </>
             )}
             <View style={[globalStyles.flex, styles.iconContainer]}>
-                {post?.voteStatus == 1 ? (
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={likeFn}
-                        style={[
-                            globalStyles.flex,
-                            styles.actionIconContainer,
-                            { borderColor: theme.likeIconBorder },
-                        ]}
-                    >
-                        <Image
-                            source={require("../../assets/icons/like.png")}
-                            style={{
-                                width: layout.iconSize,
-                                height: layout.iconSize,
-                            }}
-                        />
-                        <Text style={styles.likes}>{post?.likes}</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={likeFn}
-                        style={[globalStyles.flex, styles.actionIconContainer]}
-                    >
-                        <Image
-                            source={require("../../assets/icons/like_gray.png")}
-                            style={{
-                                width: layout.iconSize,
-                                height: layout.iconSize,
-                            }}
-                        />
-                        <Text style={styles.likes}>{post?.likes}</Text>
-                    </TouchableOpacity>
-                )}
-
-                {post?.comments?.length == 0 ? (
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={onPress}
-                        style={[globalStyles.flex, styles.actionIconContainer]}
-                    >
-                        <Image
-                            source={require("../../assets/icons/comment.png")}
-                            style={{
-                                width: layout.iconSize,
-                                height: layout.iconSize,
-                            }}
-                        />
-                        <Text onPress={onPress} style={styles.comments}>
-                            {post?.comments?.length}
-                        </Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={onPress}
-                        style={[
-                            globalStyles.flex,
-                            styles.actionIconContainer,
-                            { borderColor: "#2ABF39" },
-                        ]}
-                    >
-                        <Image
-                            source={require("../../assets/icons/comment.png")}
-                            style={{
-                                width: layout.iconSize,
-                                height: layout.iconSize,
-                            }}
-                        />
-                        <Text onPress={onPress} style={styles.comments}>
-                            {post?.comments?.length}
-                        </Text>
-                    </TouchableOpacity>
-                )}
+                <ActionTray onPress={onPress} post={post} />
+                <PostMore post={post} />
             </View>
         </View>
     );
