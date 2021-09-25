@@ -120,8 +120,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 20,
-        paddingVertical: 15,
+        padding: 13,
     },
     img: {
         width: Dimensions.get("screen").width,

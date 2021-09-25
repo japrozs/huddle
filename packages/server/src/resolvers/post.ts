@@ -14,6 +14,7 @@ import { isAuth } from "../middleware/isAuth";
 import { Context } from "../types";
 import { Like } from "../entities/Like";
 import { getConnection } from "typeorm";
+import { Comment } from "../entities/Comment";
 
 @Resolver(Post)
 export class PostResolver {
@@ -95,6 +96,25 @@ export class PostResolver {
         `
             );
         }
+        return true;
+    }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async deletePost(
+        @Arg("postId", () => Int!) postId: number,
+        @Ctx() { req }: Context
+    ) {
+        const post = await Post.findOne({
+            where: { id: postId },
+            relations: ["creator"],
+        });
+        if (req.session.userId != post?.creator.id) {
+            return false;
+        }
+        await Like.delete({ postId });
+        await Comment.delete({ postId });
+        await Post.delete({ id: postId });
         return true;
     }
 }

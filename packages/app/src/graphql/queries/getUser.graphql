@@ -22,6 +22,8 @@ query getUser($id: Int!) {
             updatedAt
             creatorId
             eventId
+            likes
+            voteStatus
             event {
                 id
                 name

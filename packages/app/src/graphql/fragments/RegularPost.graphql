@@ -7,8 +7,8 @@ fragment RegularPost on Post {
         ...RegularUser
     }
     likes
-    eventId
     voteStatus
+    eventId
     event {
         id
         name

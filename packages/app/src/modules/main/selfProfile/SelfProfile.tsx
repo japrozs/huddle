@@ -13,10 +13,13 @@ import { SvgUri } from "react-native-svg";
 import { PostCard } from "../../../components/PostCard";
 import { ProfileImage } from "../../../components/ProfileImage";
 import { useGetUserQuery, useMeQuery } from "../../../generated/graphql";
-import { colors, fonts, globalStyles, layout } from "../../../theme";
+import { colors, fonts, globalStyles, layout, theme } from "../../../theme";
 import { SelfProfileStackNav } from "./SelfProfileNav";
 import { EventCard } from "../../../components/EventCard";
 import { Event, Post } from "../../../generated/graphql";
+import { Loading } from "../../../components/Loading";
+import { timeSince } from "../../../utils/timeSince";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface UserPageProps {}
 
@@ -59,9 +62,32 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
                                     <Text style={styles.name}>
                                         {data?.getUser.name}
                                     </Text>
-                                    <Text style={styles.username}>
-                                        @{data?.getUser.username}
-                                    </Text>
+                                    <View style={globalStyles.flex}>
+                                        <MaterialIcons
+                                            name="alternate-email"
+                                            size={19}
+                                            color={theme.grayDark}
+                                        />
+                                        <Text style={styles.username}>
+                                            {data?.getUser.username}
+                                        </Text>
+                                    </View>
+                                    <View style={globalStyles.flex}>
+                                        <MaterialIcons
+                                            name="cake"
+                                            size={19}
+                                            color={theme.grayDark}
+                                        />
+                                        <Text
+                                            style={[
+                                                styles.date,
+                                                { fontFamily: fonts.inter_600 },
+                                            ]}
+                                        >
+                                            {timeSince(data?.getUser.createdAt)}
+                                        </Text>
+                                        <Text style={styles.date}>ago</Text>
+                                    </View>
                                 </View>
                             </View>
                             <Text
@@ -70,7 +96,7 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
                                 EVENTS
                             </Text>
                             <ScrollView horizontal={true}>
-                                {data?.getUser.events.map((event: any) => (
+                                {data?.getUser.events.map((event) => (
                                     <TouchableOpacity
                                         onPress={() => {
                                             navigation.navigate("EventPage", {
@@ -89,6 +115,12 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
                             >
                                 POSTS
                             </Text>
+                            {!data && loading ? <Loading /> : <></>}
+                            {data && data?.getUser.posts.length == 0 ? (
+                                <Text>there are no posts</Text>
+                            ) : (
+                                <></>
+                            )}
                         </View>
                     )}
                 />
@@ -114,15 +146,24 @@ const styles = StyleSheet.create({
         fontFamily: fonts.inter_500,
     },
     username: {
-        color: colors.textGray,
+        color: theme.grayDark,
         fontSize: 19,
         fontFamily: fonts.inter_500,
+        alignSelf: "center",
+        marginLeft: 4,
     },
     infoContainer: {
-        marginLeft: 40,
+        marginLeft: 30,
     },
     heading: {
         marginLeft: 10,
         marginTop: 20,
+    },
+    date: {
+        color: theme.grayDark,
+        fontSize: 19,
+        fontFamily: fonts.inter_500,
+        alignSelf: "center",
+        marginLeft: 5,
     },
 });

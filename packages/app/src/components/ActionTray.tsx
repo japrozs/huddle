@@ -60,45 +60,22 @@ export const ActionTray: React.FC<ActionTrayProps> = ({ post, onPress }) => {
                 </TouchableOpacity>
             )}
 
-            {post?.comments?.length == 0 ? (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={onPress}
-                    style={[globalStyles.flex, styles.actionIconContainer]}
-                >
-                    <Image
-                        source={require("../../assets/icons/comment.png")}
-                        style={{
-                            width: layout.iconSize,
-                            height: layout.iconSize,
-                        }}
-                    />
-                    <Text onPress={onPress} style={styles.comments}>
-                        {post?.comments?.length}
-                    </Text>
-                </TouchableOpacity>
-            ) : (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={onPress}
-                    style={[
-                        globalStyles.flex,
-                        styles.actionIconContainer,
-                        { borderColor: "#2ABF39" },
-                    ]}
-                >
-                    <Image
-                        source={require("../../assets/icons/comment.png")}
-                        style={{
-                            width: layout.iconSize,
-                            height: layout.iconSize,
-                        }}
-                    />
-                    <Text onPress={onPress} style={styles.comments}>
-                        {post?.comments?.length}
-                    </Text>
-                </TouchableOpacity>
-            )}
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={onPress}
+                style={[globalStyles.flex, styles.actionIconContainer]}
+            >
+                <Image
+                    source={require("../../assets/icons/comment.png")}
+                    style={{
+                        width: layout.iconSize,
+                        height: layout.iconSize,
+                    }}
+                />
+                <Text onPress={onPress} style={styles.comments}>
+                    {post?.comments?.length}
+                </Text>
+            </TouchableOpacity>
         </>
     );
 };

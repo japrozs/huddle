@@ -64,6 +64,7 @@ export type Mutation = {
   createComment: Comment;
   createEvent: EventResponse;
   createPost: Post;
+  deletePost: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   like: Scalars['Boolean'];
   login: UserResponse;
@@ -94,6 +95,11 @@ export type MutationCreateEventArgs = {
 export type MutationCreatePostArgs = {
   body: Scalars['String'];
   eventId: Scalars['Int'];
+};
+
+
+export type MutationDeletePostArgs = {
+  postId: Scalars['Int'];
 };
 
 
@@ -197,9 +203,9 @@ export type UsernamePasswordInput = {
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type RegularEventFragment = { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } };
+export type RegularEventFragment = { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, voteStatus?: Maybe<number>, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } };
 
-export type RegularPostFragment = { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> };
+export type RegularPostFragment = { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, voteStatus?: Maybe<number>, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> };
 
 export type RegularUserFragment = { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string };
 
@@ -229,6 +235,13 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number } };
+
+export type DeletePostMutationVariables = Exact<{
+  postId: Scalars['Int'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost: boolean };
 
 export type LikeMutationVariables = Exact<{
   postId: Scalars['Int'];
@@ -286,19 +299,19 @@ export type GetPostQueryVariables = Exact<{
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', getPost: { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string } } };
+export type GetPostQuery = { __typename?: 'Query', getPost: { __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, voteStatus?: Maybe<number>, eventId: number, createdAt: string, updatedAt: string, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string } } };
 
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, eventId: number, voteStatus?: Maybe<number>, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, creatorId: number, likes: number, voteStatus?: Maybe<number>, eventId: number, createdAt: string, updatedAt: string, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string }, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }> }> };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: number, username: string, name: string, email: string, bio: string, imgUrl: string, createdAt: string, events: Array<{ __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string }>, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, likes: number, createdAt: string, updatedAt: string, creatorId: number, eventId: number, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }> } };
+export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', id: number, username: string, name: string, email: string, bio: string, imgUrl: string, createdAt: string, events: Array<{ __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string }>, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, likes: number, createdAt: string, updatedAt: string, creatorId: number, eventId: number, voteStatus?: Maybe<number>, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -328,8 +341,8 @@ export const RegularPostFragmentDoc = gql`
     ...RegularUser
   }
   likes
-  eventId
   voteStatus
+  eventId
   event {
     id
     name
@@ -501,6 +514,37 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const DeletePostDocument = gql`
+    mutation deletePost($postId: Int!) {
+  deletePost(postId: $postId)
+}
+    `;
+export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, DeletePostMutationVariables>;
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<DeletePostMutation, DeletePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePostMutation, DeletePostMutationVariables>(DeletePostDocument, options);
+      }
+export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
+export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
+export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const LikeDocument = gql`
     mutation Like($postId: Int!) {
   like(postId: $postId)
@@ -923,6 +967,8 @@ export const GetUserDocument = gql`
       updatedAt
       creatorId
       eventId
+      likes
+      voteStatus
       event {
         id
         name

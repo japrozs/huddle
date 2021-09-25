@@ -18,6 +18,7 @@ const type_graphql_1 = require("type-graphql");
 const isAuth_1 = require("../middleware/isAuth");
 const Like_1 = require("../entities/Like");
 const typeorm_1 = require("typeorm");
+const Comment_1 = require("../entities/Comment");
 let PostResolver = class PostResolver {
     async voteStatus(post, { likeLoader, req }) {
         if (!req.session.userId) {
@@ -78,6 +79,19 @@ let PostResolver = class PostResolver {
         }
         return true;
     }
+    async deletePost(postId, { req }) {
+        const post = await Post_1.Post.findOne({
+            where: { id: postId },
+            relations: ["creator"],
+        });
+        if (req.session.userId != (post === null || post === void 0 ? void 0 : post.creator.id)) {
+            return false;
+        }
+        await Like_1.Like.delete({ postId });
+        await Comment_1.Comment.delete({ postId });
+        await Post_1.Post.delete({ id: postId });
+        return true;
+    }
 };
 __decorate([
     (0, type_graphql_1.FieldResolver)(() => type_graphql_1.Int, { nullable: true }),
@@ -120,6 +134,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "like", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
+    __param(0, (0, type_graphql_1.Arg)("postId", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "deletePost", null);
 PostResolver = __decorate([
     (0, type_graphql_1.Resolver)(Post_1.Post)
 ], PostResolver);

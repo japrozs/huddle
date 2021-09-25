@@ -66,6 +66,19 @@ export const PostPage: React.FC<PropType> = ({ route, navigation }) => {
                     >
                         {data?.getPost.creator.username}
                     </Text>
+                    <Text
+                        style={styles.event}
+                        onPress={() => {
+                            // @ts-ignore
+                            navigation.navigate("EventPage", {
+                                id: data?.getPost.event.id,
+                                name: data?.getPost.event.name,
+                            });
+                        }}
+                    >
+                        {" "}
+                        • {data?.getPost.event.name.toLowerCase()}
+                    </Text>
                     <Text style={styles.time}>
                         {timeSinceShort(data?.getPost.createdAt)}
                     </Text>
@@ -128,8 +141,9 @@ const styles = StyleSheet.create({
         borderRadius: layout.images.postProfileImgWidth / 2 + 10,
     },
     username: {
-        fontSize: 20,
-        fontFamily: fonts.inter_500,
+        color: colors.textColor,
+        fontSize: 18,
+        fontFamily: fonts.inter_600,
         marginLeft: 10,
     },
     time: {
@@ -147,5 +161,10 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 13,
         marginBottom: 0,
+    },
+    event: {
+        fontSize: 18,
+        color: theme.grayDark,
+        fontFamily: fonts.inter_500,
     },
 });

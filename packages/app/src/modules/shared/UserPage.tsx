@@ -76,7 +76,6 @@ export const UserPage: React.FC<PropType> = ({ route, navigation }) => {
                                             size={19}
                                             color={theme.grayDark}
                                         />
-                                        <Text style={styles.date}>Joined</Text>
                                         <Text
                                             style={[
                                                 styles.date,
