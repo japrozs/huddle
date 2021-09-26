@@ -1,5 +1,5 @@
-packages/*/node_modules
+packages/*/node_modules/
 packages/*/.env
 packages/*/.env.production
-packages/*/dist
+packages/*/dist/
 root
