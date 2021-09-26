@@ -21,6 +21,7 @@ import { getConnection } from "typeorm";
 import { imgUrlGenerator } from "../generators/imgUrl";
 import { bioGenerator } from "../generators/bio";
 import { isAuth } from "../middleware/isAuth";
+import { validateProfileUpdate } from "../utils/validateProfileUpdate";
 
 @ObjectType()
 export class FieldError {
@@ -183,6 +184,49 @@ export class UserResolver {
         req.session.userId = user.id;
 
         return { user };
+    }
+
+    @UseMiddleware(isAuth)
+    @Mutation(() => UserResponse)
+    async updateProfile(
+        @Arg("name") name: string,
+        @Arg("bio") bio: string,
+        @Arg("username") username: string,
+        @Ctx() { req }: Context
+    ) {
+        const user = await User.findOne({ where: { username } });
+        if (user && user.id != req.session.userId) {
+            return {
+                errors: [
+                    {
+                        field: "username",
+                        message: "Username is taken",
+                    },
+                ],
+            };
+        }
+
+        const errors = validateProfileUpdate({
+            name,
+            bio,
+            username,
+        });
+        if (errors) {
+            return { errors };
+        }
+
+        await User.update(
+            { id: req.session.userId },
+            {
+                name,
+                bio,
+                username,
+            }
+        );
+
+        const updatedUser = await User.findOne(req.session.userId);
+
+        return { user: updatedUser };
     }
 
     @Mutation(() => UserResponse)

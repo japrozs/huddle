@@ -1,0 +1,8 @@
+mutation updateEvent(
+    $desc: String!
+    $tagLine: String!
+    $name: String!
+    $eventId: Int!
+) {
+    updateEvent(eventId: $eventId, name: $name, tagLine: $tagLine, desc: $desc)
+}

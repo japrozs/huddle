@@ -28,6 +28,7 @@ const typeorm_1 = require("typeorm");
 const imgUrl_1 = require("../generators/imgUrl");
 const bio_1 = require("../generators/bio");
 const isAuth_1 = require("../middleware/isAuth");
+const validateProfileUpdate_1 = require("../utils/validateProfileUpdate");
 let FieldError = class FieldError {
 };
 __decorate([
@@ -157,6 +158,34 @@ let UserResolver = class UserResolver {
         req.session.userId = user.id;
         return { user };
     }
+    async updateProfile(name, bio, username, { req }) {
+        const user = await User_1.User.findOne({ where: { username } });
+        if (user && user.id != req.session.userId) {
+            return {
+                errors: [
+                    {
+                        field: "username",
+                        message: "Username is taken",
+                    },
+                ],
+            };
+        }
+        const errors = (0, validateProfileUpdate_1.validateProfileUpdate)({
+            name,
+            bio,
+            username,
+        });
+        if (errors) {
+            return { errors };
+        }
+        await User_1.User.update({ id: req.session.userId }, {
+            name,
+            bio,
+            username,
+        });
+        const updatedUser = await User_1.User.findOne(req.session.userId);
+        return { user: updatedUser };
+    }
     async login(usernameOrEmail, password, { req }) {
         const user = await User_1.User.findOne(usernameOrEmail.includes("@")
             ? { where: { email: usernameOrEmail } }
@@ -246,6 +275,17 @@ __decorate([
     __metadata("design:paramtypes", [UsernamePasswordInput_1.UsernamePasswordInput, Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
+__decorate([
+    (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
+    (0, type_graphql_1.Mutation)(() => UserResponse),
+    __param(0, (0, type_graphql_1.Arg)("name")),
+    __param(1, (0, type_graphql_1.Arg)("bio")),
+    __param(2, (0, type_graphql_1.Arg)("username")),
+    __param(3, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String, Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "updateProfile", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
     __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),

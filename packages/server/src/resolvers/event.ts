@@ -55,6 +55,33 @@ export class EventResolver {
     }
 
     @UseMiddleware(isAuth)
+    @Mutation(() => Boolean)
+    async updateEvent(
+        @Arg("eventId", () => Int!) eventId: number,
+        @Arg("name") name: string,
+        @Arg("tagLine") tagLine: string,
+        @Arg("desc") desc: string,
+        @Ctx() { req }: Context
+    ) {
+        const event = await Event.findOne({
+            where: { id: eventId },
+            relations: ["creator"],
+        });
+        if (event?.creator.id != req.session.userId) {
+            return false;
+        }
+        await Event.update(
+            { id: eventId },
+            {
+                name,
+                tagLine,
+                description: desc,
+            }
+        );
+        return true;
+    }
+
+    @UseMiddleware(isAuth)
     @Query(() => [Event])
     async getAllEvents() {
         return Event.find({

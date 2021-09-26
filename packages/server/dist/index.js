@@ -21,8 +21,10 @@ const Post_1 = require("./entities/Post");
 const Comment_1 = require("./entities/Comment");
 const post_1 = require("./resolvers/post");
 const post_2 = __importDefault(require("./resolvers/upload/post"));
+const event_1 = __importDefault(require("./resolvers/upload/event"));
+const profile_1 = __importDefault(require("./resolvers/upload/profile"));
 const Event_1 = require("./entities/Event");
-const event_1 = require("./resolvers/event");
+const event_2 = require("./resolvers/event");
 const comment_1 = require("./resolvers/comment");
 const Like_1 = require("./entities/Like");
 const createLikeLoader_1 = require("./utils/loaders/createLikeLoader");
@@ -68,7 +70,7 @@ const main = async () => {
             resolvers: [
                 user_1.UserResolver,
                 post_1.PostResolver,
-                event_1.EventResolver,
+                event_2.EventResolver,
                 comment_1.CommentResolver,
             ],
             validate: false,
@@ -81,6 +83,8 @@ const main = async () => {
         }),
     });
     app.use("/", post_2.default);
+    app.use("/", event_1.default);
+    app.use("/", profile_1.default);
     apolloServer.applyMiddleware({
         app,
         cors: false,

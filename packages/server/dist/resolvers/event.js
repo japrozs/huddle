@@ -59,6 +59,21 @@ class EventResolver {
         }).save();
         return event;
     }
+    async updateEvent(eventId, name, tagLine, desc, { req }) {
+        const event = await Event_1.Event.findOne({
+            where: { id: eventId },
+            relations: ["creator"],
+        });
+        if ((event === null || event === void 0 ? void 0 : event.creator.id) != req.session.userId) {
+            return false;
+        }
+        await Event_1.Event.update({ id: eventId }, {
+            name,
+            tagLine,
+            description: desc,
+        });
+        return true;
+    }
     async getAllEvents() {
         return Event_1.Event.find({
             relations: ["creator", "posts"],
@@ -95,6 +110,18 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String, Object]),
     __metadata("design:returntype", Promise)
 ], EventResolver.prototype, "createEvent", null);
+__decorate([
+    (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("eventId", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("name")),
+    __param(2, (0, type_graphql_1.Arg)("tagLine")),
+    __param(3, (0, type_graphql_1.Arg)("desc")),
+    __param(4, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String, String, String, Object]),
+    __metadata("design:returntype", Promise)
+], EventResolver.prototype, "updateEvent", null);
 __decorate([
     (0, type_graphql_1.UseMiddleware)(isAuth_1.isAuth),
     (0, type_graphql_1.Query)(() => [Event_1.Event]),

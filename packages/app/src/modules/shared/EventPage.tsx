@@ -11,11 +11,13 @@ import {
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { PostCard } from "../../components/PostCard";
-import { useGetEventQuery } from "../../generated/graphql";
-import { colors, fonts, globalStyles } from "../../theme";
+import { EditEventModal } from "../../components/edit/EditEventModal";
+import { useGetEventQuery, useMeQuery } from "../../generated/graphql";
+import { colors, fonts, globalStyles, layout, theme } from "../../theme";
 import { HomeStackNav } from "../main/Home/HomeNav";
 import { SearchStackNav } from "../main/search/SearchNav";
 import { SelfProfileStackNav } from "../main/selfProfile/selfProfileNav";
+import { Feather } from "@expo/vector-icons";
 
 interface EventPageProps {}
 
@@ -31,6 +33,8 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
         },
     });
     const [refreshing, setRefreshing] = useState(false);
+    const [modalVisible, steModalVisible] = useState(false);
+    const { data: me } = useMeQuery();
 
     const client = useApolloClient();
 
@@ -57,14 +61,40 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                     keyExtractor={(item) => item.id.toString()}
                     ListHeaderComponent={() => (
                         <>
+                            <EditEventModal
+                                event={data?.getEvent}
+                                modalVisible={modalVisible}
+                                setModalVisible={steModalVisible}
+                            />
                             <Image
                                 source={{ uri: data?.getEvent.imgUrl }}
                                 style={styles.img}
                             />
                             <View style={styles.container}>
-                                <Text style={styles.eventName}>
-                                    {data?.getEvent.name}
-                                </Text>
+                                <View style={globalStyles.flex}>
+                                    <Text style={styles.eventName}>
+                                        {data?.getEvent.name}
+                                    </Text>
+                                    {data?.getEvent.id == me?.me?.id ? (
+                                        <Feather
+                                            style={{
+                                                borderRadius: 50,
+                                                borderColor: theme.borderColor,
+                                                borderWidth: 1,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                padding: 6,
+                                                marginLeft: "auto",
+                                                marginRight: 0,
+                                            }}
+                                            name="edit-2"
+                                            size={layout.iconSize}
+                                            color={theme.headingColor}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
+                                </View>
                                 <Text style={styles.tagLine}>
                                     {data?.getEvent.tagLine}
                                 </Text>

@@ -16,6 +16,8 @@ import { Post } from "./entities/Post";
 import { Comment } from "./entities/Comment";
 import { PostResolver } from "./resolvers/post";
 import postUpload from "./resolvers/upload/post";
+import eventUpload from "./resolvers/upload/event";
+import profileUpload from "./resolvers/upload/profile";
 import { Event } from "./entities/Event";
 import { EventResolver } from "./resolvers/event";
 import { CommentResolver } from "./resolvers/comment";
@@ -86,6 +88,8 @@ const main = async () => {
     });
 
     app.use("/", postUpload);
+    app.use("/", eventUpload);
+    app.use("/", profileUpload);
 
     apolloServer.applyMiddleware({
         app,
