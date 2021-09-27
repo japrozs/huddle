@@ -14,10 +14,6 @@ export const AuthStack: React.FC<AuthStackProps> = ({}) => {
     return (
         <Stack.Navigator
             screenOptions={{
-                headerStyle: {
-                    borderBottomColor: theme.borderColor,
-                    borderBottomWidth: 0.2,
-                },
                 headerTintColor: colors.textColor,
                 headerTitleStyle: {
                     color: theme.textColor,
