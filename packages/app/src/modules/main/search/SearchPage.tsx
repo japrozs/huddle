@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Dimensions } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TextInput,
+    Dimensions,
+    Image,
+} from "react-native";
 import constants from "expo-constants";
 import { colors, layout, globalStyles, fonts } from "../../../theme";
 import { AntDesign } from "@expo/vector-icons";
@@ -38,9 +45,15 @@ export const SearchPage: React.FC<SearchStackNav<"SearchPage">> = ({
                 />
             </View>
             {searchQuery.trim().length == 0 ? (
-                <View>
-                    <Text>type something in the input field to search</Text>
-                </View>
+                <Image
+                    style={{
+                        width: 350,
+                        height: 350,
+                        alignSelf: "center",
+                        marginTop: 100,
+                    }}
+                    source={require("../../../../assets/empty/type_search_box.png")}
+                />
             ) : (
                 <></>
             )}
@@ -61,6 +74,19 @@ export const SearchPage: React.FC<SearchStackNav<"SearchPage">> = ({
                             result={res}
                         />
                     ))}
+                    {search(searchQuery, allEvents, allUsers).length == 0 ? (
+                        <Image
+                            style={{
+                                width: 300,
+                                height: 300,
+                                alignSelf: "center",
+                                marginTop: 100,
+                            }}
+                            source={require("../../../../assets/empty/no_search_results.png")}
+                        />
+                    ) : (
+                        <></>
+                    )}
                 </>
             ) : (
                 <></>

@@ -18,6 +18,7 @@ import { HomeStackNav } from "../main/Home/HomeNav";
 import { SearchStackNav } from "../main/search/SearchNav";
 import { SelfProfileStackNav } from "../main/selfProfile/selfProfileNav";
 import { Feather } from "@expo/vector-icons";
+import { Loading } from "../../components/Loading";
 
 interface EventPageProps {}
 
@@ -133,8 +134,16 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                 <Text style={globalStyles.heading}>
                                     RECENT POSTS
                                 </Text>
+                                {loading ? <Loading /> : <></>}
                                 {data && data?.getEvent.posts.length == 0 ? (
-                                    <Text>there are no posts</Text>
+                                    <Image
+                                        style={{
+                                            width: 300,
+                                            height: 300,
+                                            alignSelf: "center",
+                                        }}
+                                        source={require("../../../assets/empty/no_posts_event.png")}
+                                    />
                                 ) : (
                                     <></>
                                 )}

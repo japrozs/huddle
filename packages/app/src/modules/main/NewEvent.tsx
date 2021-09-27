@@ -43,6 +43,7 @@ export const NewEvent: React.FC<MainStackNav<"NewEvent">> = ({
             },
         });
         if (res.data?.createEvent.errors) {
+            setIsLoading(false);
             return setErrors(errorToMap(res.data?.createEvent.errors));
         }
         await client.resetStore();

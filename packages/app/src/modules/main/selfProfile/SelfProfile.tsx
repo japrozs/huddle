@@ -13,7 +13,14 @@ import { SvgUri } from "react-native-svg";
 import { PostCard } from "../../../components/PostCard";
 import { ProfileImage } from "../../../components/ProfileImage";
 import { useGetUserQuery, useMeQuery } from "../../../generated/graphql";
-import { colors, fonts, globalStyles, layout, theme } from "../../../theme";
+import {
+    colors,
+    constants,
+    fonts,
+    globalStyles,
+    layout,
+    theme,
+} from "../../../theme";
 import { SelfProfileStackNav } from "./SelfProfileNav";
 import { EventCard } from "../../../components/EventCard";
 import { Event, Post } from "../../../generated/graphql";
@@ -69,10 +76,18 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
                             <View style={{ padding: 12 }}>
                                 <View style={[globalStyles.flex]}>
                                     <View style={styles.img}>
-                                        <ProfileImage
-                                            imgUrl={data?.getUser.imgUrl}
-                                            variant={"regular"}
-                                        />
+                                        <View
+                                            style={{
+                                                borderRadius: 55,
+                                                borderColor: theme.borderColor,
+                                                borderWidth: 1,
+                                            }}
+                                        >
+                                            <ProfileImage
+                                                imgUrl={data?.getUser.imgUrl}
+                                                variant={"regular"}
+                                            />
+                                        </View>
                                         <Feather
                                             style={{
                                                 borderRadius: 50,
@@ -166,9 +181,16 @@ export const SelfProfile: React.FC<PropType> = ({ route, navigation }) => {
                                 >
                                     POSTS
                                 </Text>
-                                {!data && loading ? <Loading /> : <></>}
+                                {loading ? <Loading /> : <></>}
                                 {data && data?.getUser.posts.length == 0 ? (
-                                    <Text>there are no posts</Text>
+                                    <Image
+                                        style={{
+                                            width: 300,
+                                            height: 300,
+                                            alignSelf: "center",
+                                        }}
+                                        source={require("../../../../assets/empty/no_posts_profile.png")}
+                                    />
                                 ) : (
                                     <></>
                                 )}

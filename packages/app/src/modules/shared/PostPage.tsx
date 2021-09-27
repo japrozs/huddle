@@ -194,6 +194,18 @@ export const PostPage: React.FC<PropType> = ({ route, navigation }) => {
                         {comments?.getComments.map((comment) => (
                             <CommentCard key={comment.id} comment={comment} />
                         ))}
+                        {comments?.getComments.length == 0 ? (
+                            <Image
+                                style={{
+                                    width: 300,
+                                    height: 300,
+                                    alignSelf: "center",
+                                }}
+                                source={require("../../../assets/empty/no_comments.png")}
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </View>
                 </ScrollView>
                 <CommentInput postId={data?.getPost.id} />

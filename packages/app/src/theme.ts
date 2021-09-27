@@ -70,6 +70,7 @@ export const constants = {
     ACTIVE_OPACITY: 1,
     ANIMATION_DURATION: 180,
     IMAGE_MODAL_OPACITY: 0.97,
+    SCREEN_WIDTH: Dimensions.get("screen").width,
 };
 
 export const globalStyles = StyleSheet.create({
