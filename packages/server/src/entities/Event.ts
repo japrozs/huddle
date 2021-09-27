@@ -43,6 +43,10 @@ export class Event extends BaseEntity {
     description: string;
 
     @Field()
+    @Column({ nullable: true })
+    location: string;
+
+    @Field()
     @Column()
     creatorId: number;
 

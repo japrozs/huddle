@@ -9,9 +9,12 @@ interface ActionTrayProps {
     onPress: any;
 }
 
-export const ActionTray: React.FC<ActionTrayProps> = ({ post, onPress }) => {
+export const ActionTray: React.FC<ActionTrayProps> = ({ post: p, onPress }) => {
     const [like] = useLikeMutation();
     const client = useApolloClient();
+
+    let post: ActionTrayProps["post"];
+    Object.assign(post, p);
 
     const likeFn = async () => {
         await like({
@@ -22,12 +25,24 @@ export const ActionTray: React.FC<ActionTrayProps> = ({ post, onPress }) => {
 
         await client.resetStore();
     };
+
+    const changeVoteStatus = async () => {
+        if (post.voteStatus == 1) {
+            post.likes--;
+            post.voteStatus = null;
+        } else {
+            post.likes++;
+            post.voteStatus = 1;
+        }
+        likeFn();
+    };
+
     return (
         <>
             {post?.voteStatus == 1 ? (
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={likeFn}
+                    onPress={changeVoteStatus}
                     style={[
                         globalStyles.flex,
                         styles.actionIconContainer,
@@ -46,7 +61,7 @@ export const ActionTray: React.FC<ActionTrayProps> = ({ post, onPress }) => {
             ) : (
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={likeFn}
+                    onPress={changeVoteStatus}
                     style={[globalStyles.flex, styles.actionIconContainer]}
                 >
                     <Image

@@ -50,6 +50,11 @@ __decorate([
 ], Event.prototype, "description", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Event.prototype, "location", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Event.prototype, "creatorId", void 0);
