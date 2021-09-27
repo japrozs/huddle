@@ -68,6 +68,7 @@ export const constants = {
     inputWidth: Dimensions.get("window").width - 30,
     POST_BODY_TRUNCATE_LENGTH: 50,
     ACTIVE_OPACITY: 1,
+    ANIMATION_DURATION: 180,
 };
 
 export const globalStyles = StyleSheet.create({

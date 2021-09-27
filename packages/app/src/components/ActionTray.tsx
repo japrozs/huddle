@@ -1,8 +1,16 @@
 import { useApolloClient } from "@apollo/client";
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import {
+    Animated,
+    Easing,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { useLikeMutation } from "../generated/graphql";
-import { fonts, globalStyles, layout, theme } from "../theme";
+import { constants, fonts, globalStyles, layout, theme } from "../theme";
 
 interface ActionTrayProps {
     post: any;
@@ -10,11 +18,13 @@ interface ActionTrayProps {
 }
 
 export const ActionTray: React.FC<ActionTrayProps> = ({ post: p, onPress }) => {
+    let postAssigned: ActionTrayProps["post"] = Object.assign({}, p);
+    const [post, setPost] = useState(postAssigned);
     const [like] = useLikeMutation();
     const client = useApolloClient();
-
-    let post: ActionTrayProps["post"];
-    Object.assign(post, p);
+    const [animation, setAnimation] = useState(
+        new Animated.Value(post.voteStatus == 1 ? 1 : 0)
+    );
 
     const likeFn = async () => {
         await like({
@@ -30,55 +40,82 @@ export const ActionTray: React.FC<ActionTrayProps> = ({ post: p, onPress }) => {
         if (post.voteStatus == 1) {
             post.likes--;
             post.voteStatus = null;
+            Animated.timing(animation, {
+                toValue: 1,
+                duration: 100,
+                useNativeDriver: false,
+            }).start(() => {
+                Animated.timing(animation, {
+                    toValue: 0,
+                    duration: constants.ANIMATION_DURATION,
+                    useNativeDriver: false,
+                }).start();
+            });
         } else {
             post.likes++;
             post.voteStatus = 1;
+            Animated.timing(animation, {
+                toValue: 0,
+                duration: 100,
+                useNativeDriver: false,
+            }).start(() => {
+                Animated.timing(animation, {
+                    toValue: 1,
+                    duration: constants.ANIMATION_DURATION,
+                    useNativeDriver: false,
+                }).start();
+            });
         }
         likeFn();
     };
 
+    const boxInterpolation = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [theme.borderColor, theme.likeIconBorder],
+    });
+    const animatedStyle = {
+        borderColor: boxInterpolation,
+    };
+
     return (
         <>
-            {post?.voteStatus == 1 ? (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={changeVoteStatus}
-                    style={[
-                        globalStyles.flex,
-                        styles.actionIconContainer,
-                        { borderColor: theme.likeIconBorder },
-                    ]}
+            <TouchableOpacity activeOpacity={1} onPress={changeVoteStatus}>
+                <Animated.View
+                    style={{
+                        ...animatedStyle,
+                        ...styles.actionIconContainer,
+                        ...globalStyles.flex,
+                    }}
                 >
-                    <Image
-                        source={require("../../assets/icons/like.png")}
-                        style={{
-                            width: layout.iconSize,
-                            height: layout.iconSize,
-                        }}
-                    />
+                    {post?.voteStatus == 1 ? (
+                        <Image
+                            source={require("../../assets/icons/like.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                    ) : (
+                        <Image
+                            source={require("../../assets/icons/like_gray.png")}
+                            style={{
+                                width: layout.iconSize,
+                                height: layout.iconSize,
+                            }}
+                        />
+                    )}
                     <Text style={styles.likes}>{post?.likes}</Text>
-                </TouchableOpacity>
-            ) : (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={changeVoteStatus}
-                    style={[globalStyles.flex, styles.actionIconContainer]}
-                >
-                    <Image
-                        source={require("../../assets/icons/like_gray.png")}
-                        style={{
-                            width: layout.iconSize,
-                            height: layout.iconSize,
-                        }}
-                    />
-                    <Text style={styles.likes}>{post?.likes}</Text>
-                </TouchableOpacity>
-            )}
+                </Animated.View>
+            </TouchableOpacity>
 
             <TouchableOpacity
                 activeOpacity={1}
                 onPress={onPress}
-                style={[globalStyles.flex, styles.actionIconContainer]}
+                style={[
+                    globalStyles.flex,
+                    styles.actionIconContainer,
+                    { borderColor: theme.borderColor },
+                ]}
             >
                 <Image
                     source={require("../../assets/icons/comment.png")}
@@ -102,7 +139,6 @@ const styles = StyleSheet.create({
         color: theme.grayDark,
     },
     actionIconContainer: {
-        borderColor: theme.borderColor,
         borderRadius: 4,
         borderWidth: 1,
         paddingVertical: 8,

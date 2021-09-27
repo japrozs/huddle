@@ -29,15 +29,6 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
     const [like] = useLikeMutation();
     const client = useApolloClient();
 
-    const likeFn = async () => {
-        await like({
-            variables: {
-                postId: post?.id || 0,
-            },
-        });
-
-        await client.resetStore();
-    };
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity
@@ -100,14 +91,15 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPress }) => {
                         activeOpacity={constants.ACTIVE_OPACITY}
                         onPress={onPress}
                     >
-                        <View style={{ backgroundColor: theme.headingColor }}>
-                            <Image
-                                style={styles.img}
-                                source={{
-                                    uri: post.imgUrl,
-                                }}
-                            />
-                        </View>
+                        <Image
+                            style={[
+                                styles.img,
+                                { backgroundColor: theme.headingColor },
+                            ]}
+                            source={{
+                                uri: post.imgUrl,
+                            }}
+                        />
                     </TouchableOpacity>
                 </>
             )}
