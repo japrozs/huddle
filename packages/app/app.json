@@ -3,6 +3,7 @@
         "name": "huddle",
         "slug": "huddle",
         "version": "0.0.1",
+        "scheme": "huddle",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {

@@ -81,6 +81,22 @@ export const Login: React.FC<AuthStackNav<"Login">> = ({ navigation }) => {
                     Register
                 </Text>
             </View>
+            <Text
+                onPress={() => {
+                    navigation.navigate("ForgotPassword");
+                }}
+                style={{
+                    fontSize: 16,
+                    fontFamily: fonts.inter_600,
+                    color: theme.gray,
+                    alignSelf: "flex-end",
+                    position: "absolute",
+                    bottom: 90,
+                    right: 13,
+                }}
+            >
+                Forgot password?
+            </Text>
             <TouchableOpacity
                 onPress={login}
                 style={[globalStyles.button, styles.button]}

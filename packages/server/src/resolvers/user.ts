@@ -120,9 +120,9 @@ export class UserResolver {
 
         await sendEmail(
             user.email,
-            `<h1>Change your Lireddit password</h1>
+            `<h1>Change your Huddle password</h1>
       <h3>
-        Click here to <a href="http://localhost:3000/change-password/${token}">reset your password</a>
+        Click here to <a href="${process.env.WEBSITE_URL}/change-password/${token}">reset your password</a>
       </h3>`
         );
         return true;

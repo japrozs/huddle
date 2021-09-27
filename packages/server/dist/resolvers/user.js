@@ -106,9 +106,9 @@ let UserResolver = class UserResolver {
         }
         const token = (0, uuid_1.v4)();
         await redis.set(constants_1.FORGET_PASSWORD_PREFIX + token, user.id, "ex", 1000 * 60 * 60 * 24 * 3);
-        await (0, sendEmail_1.sendEmail)(user.email, `<h1>Change your Lireddit password</h1>
+        await (0, sendEmail_1.sendEmail)(user.email, `<h1>Change your Huddle password</h1>
       <h3>
-        Click here to <a href="http://localhost:3000/change-password/${token}">reset your password</a>
+        Click here to <a href="${process.env.WEBSITE_URL}/change-password/${token}">reset your password</a>
       </h3>`);
         return true;
     }

@@ -4,6 +4,7 @@ import { AuthStackParamList } from "./auth/AuthNav";
 import { Login } from "./auth/Login";
 import { Register } from "./auth/Register";
 import { colors, fonts, theme } from "../theme";
+import { ForgotPassword } from "./auth/ForgotPassword";
 
 interface AuthStackProps {}
 
@@ -38,6 +39,13 @@ export const AuthStack: React.FC<AuthStackProps> = ({}) => {
                 }}
                 name="Register"
                 component={Register}
+            />
+            <Stack.Screen
+                options={{
+                    headerTitle: "Forgot Password",
+                }}
+                name="ForgotPassword"
+                component={ForgotPassword}
             />
         </Stack.Navigator>
     );
