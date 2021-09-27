@@ -69,6 +69,7 @@ export const constants = {
     POST_BODY_TRUNCATE_LENGTH: 50,
     ACTIVE_OPACITY: 1,
     ANIMATION_DURATION: 180,
+    IMAGE_MODAL_OPACITY: 0.97,
 };
 
 export const globalStyles = StyleSheet.create({
