@@ -33,7 +33,6 @@ export const ResultCard: React.FC<ResultCardProps> = ({
                         name: result.name,
                     });
                 } else {
-                    alert("id : " + result.id);
                     navigation.navigate("UserPage", {
                         id: result.id,
                         name: result.name,

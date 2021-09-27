@@ -33,7 +33,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
         },
     });
     const [refreshing, setRefreshing] = useState(false);
-    const [modalVisible, steModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const { data: me } = useMeQuery();
 
     const client = useApolloClient();
@@ -64,7 +64,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                             <EditEventModal
                                 event={data?.getEvent}
                                 modalVisible={modalVisible}
-                                setModalVisible={steModalVisible}
+                                setModalVisible={setModalVisible}
                             />
                             <Image
                                 source={{ uri: data?.getEvent.imgUrl }}
@@ -75,7 +75,7 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                     <Text style={styles.eventName}>
                                         {data?.getEvent.name}
                                     </Text>
-                                    {data?.getEvent.id == me?.me?.id ? (
+                                    {data?.getEvent.creatorId == me?.me?.id ? (
                                         <Feather
                                             style={{
                                                 borderRadius: 50,
@@ -88,6 +88,9 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                                 marginRight: 0,
                                             }}
                                             name="edit-2"
+                                            onPress={() =>
+                                                setModalVisible(true)
+                                            }
                                             size={layout.iconSize}
                                             color={theme.headingColor}
                                         />

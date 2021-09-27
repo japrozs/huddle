@@ -131,8 +131,6 @@ export const UserPage: React.FC<PropType> = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     img: {
-        borderColor: colors.gray,
-        borderWidth: 1,
         marginLeft: 10,
         width: layout.images.profileImgWidth,
         height: layout.images.profileImgHeight,

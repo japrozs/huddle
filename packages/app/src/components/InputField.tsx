@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         padding: 11,
         fontSize: 19,
         borderRadius: 5,
-        width: constants.inputWidth,
+        width: "100%",
         marginVertical: 7,
         fontFamily: fonts.inter_500,
         color: "#000",

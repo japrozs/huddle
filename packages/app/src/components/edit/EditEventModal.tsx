@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
+    Dimensions,
 } from "react-native";
 import { fonts, globalStyles, layout, theme } from "../../theme";
 import { Entypo } from "@expo/vector-icons";
@@ -23,6 +24,7 @@ import { ProfileImage } from "../ProfileImage";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import { AntDesign } from "@expo/vector-icons";
 
 interface EditEventModalProps {
     modalVisible: boolean;
@@ -118,12 +120,12 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
             <ScrollView style={styles.modalView}>
                 <View style={globalStyles.flex}>
                     <Text style={styles.heading}>Edit Details</Text>
-                    <Entypo
+                    <AntDesign
+                        name="close"
                         onPress={() => setModalVisible(!modalVisible)}
-                        name="cross"
                         style={{ marginLeft: "auto", marginRight: 0 }}
-                        size={layout.iconSize}
-                        color={theme.textColor}
+                        size={layout.iconSize - 2}
+                        color={theme.gray}
                     />
                 </View>
                 <View
@@ -163,7 +165,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
                     <TouchableOpacity
                         activeOpacity={0.5}
                         onPress={submit}
-                        style={globalStyles.button}
+                        style={[globalStyles.button, styles.button]}
                     >
                         <Text style={globalStyles.buttonText}>
                             Update event
@@ -172,7 +174,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
                 ) : (
                     <TouchableOpacity
                         activeOpacity={1}
-                        style={globalStyles.button}
+                        style={[globalStyles.button, styles.button]}
                     >
                         <ActivityIndicator
                             size={"large"}
@@ -194,5 +196,8 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 25,
         fontFamily: fonts.inter_700,
+    },
+    button: {
+        marginTop: 30,
     },
 });
