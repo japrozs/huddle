@@ -19,6 +19,7 @@ import { SearchStackNav } from "../main/search/SearchNav";
 import { SelfProfileStackNav } from "../main/selfProfile/selfProfileNav";
 import { Feather } from "@expo/vector-icons";
 import { Loading } from "../../components/Loading";
+import { Ionicons } from "@expo/vector-icons";
 
 interface EventPageProps {}
 
@@ -116,6 +117,23 @@ export const EventPage: React.FC<PropType> = ({ route, navigation }) => {
                                         ).toLocaleDateString()}
                                     </Text>
                                 </View>
+                                <View
+                                    style={[
+                                        globalStyles.flex,
+                                        {
+                                            marginVertical: 5,
+                                        },
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name="location-outline"
+                                        size={layout.iconSize}
+                                        color={theme.headingColor}
+                                    />
+                                    <Text style={styles.location}>
+                                        {data?.getEvent?.location}
+                                    </Text>
+                                </View>
                                 <TouchableOpacity
                                     onPress={() => {
                                         // @ts-ignore
@@ -188,5 +206,12 @@ const styles = StyleSheet.create({
     },
     button: {
         marginVertical: 20,
+    },
+    location: {
+        marginLeft: 5,
+        alignSelf: "center",
+        fontFamily: fonts.inter_600,
+        color: theme.gray,
+        fontSize: 16,
     },
 });

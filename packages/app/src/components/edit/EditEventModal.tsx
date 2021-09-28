@@ -36,6 +36,7 @@ interface ErrorProps {
     name?: string;
     desc?: string;
     tagLine?: string;
+    location?: string;
 }
 
 export const EditEventModal: React.FC<EditEventModalProps> = ({
@@ -46,6 +47,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
     const [name, setName] = useState(event?.name);
     const [tagLine, setTagLine] = useState(event?.tagLine);
     const [description, setDescription] = useState(event?.description);
+    const [location, setLocation] = useState(event?.location || "");
     const [errors, setErrors] = useState<ErrorProps>({});
     const [photoUri, setPhotoUri] = useState(event?.imgUrl);
     const [updateEventMut, { loading }] = useUpdateEventMutation();
@@ -84,6 +86,7 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
                 name,
                 tagLine,
                 desc: description,
+                location,
             },
         });
         await client.resetStore();
@@ -160,6 +163,14 @@ export const EditEventModal: React.FC<EditEventModalProps> = ({
                     setter={setDescription}
                     title={"Description"}
                     placeholder={"Description"}
+                />
+                <InputField
+                    errors={errors}
+                    name={"location"}
+                    value={location}
+                    setter={setLocation}
+                    title={"Location"}
+                    placeholder={"Location"}
                 />
                 {!loading ? (
                     <TouchableOpacity

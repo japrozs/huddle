@@ -2,7 +2,14 @@ mutation updateEvent(
     $desc: String!
     $tagLine: String!
     $name: String!
+    $location: String!
     $eventId: Int!
 ) {
-    updateEvent(eventId: $eventId, name: $name, tagLine: $tagLine, desc: $desc)
+    updateEvent(
+        eventId: $eventId
+        name: $name
+        tagLine: $tagLine
+        desc: $desc
+        location: $location
+    )
 }

@@ -59,7 +59,7 @@ class EventResolver {
         }).save();
         return event;
     }
-    async updateEvent(eventId, name, tagLine, desc, { req }) {
+    async updateEvent(eventId, name, tagLine, desc, location, { req }) {
         const event = await Event_1.Event.findOne({
             where: { id: eventId },
             relations: ["creator"],
@@ -71,6 +71,7 @@ class EventResolver {
             name,
             tagLine,
             description: desc,
+            location,
         });
         return true;
     }
@@ -117,9 +118,10 @@ __decorate([
     __param(1, (0, type_graphql_1.Arg)("name")),
     __param(2, (0, type_graphql_1.Arg)("tagLine")),
     __param(3, (0, type_graphql_1.Arg)("desc")),
-    __param(4, (0, type_graphql_1.Ctx)()),
+    __param(4, (0, type_graphql_1.Arg)("location")),
+    __param(5, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, String, String, String, Object]),
+    __metadata("design:paramtypes", [Number, String, String, String, String, Object]),
     __metadata("design:returntype", Promise)
 ], EventResolver.prototype, "updateEvent", null);
 __decorate([

@@ -4,6 +4,7 @@ query getEvent($id: Int!) {
         name
         imgUrl
         tagLine
+        location
         posts {
             id
             body

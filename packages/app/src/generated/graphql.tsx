@@ -130,6 +130,7 @@ export type MutationRegisterArgs = {
 export type MutationUpdateEventArgs = {
   desc: Scalars['String'];
   eventId: Scalars['Int'];
+  location: Scalars['String'];
   name: Scalars['String'];
   tagLine: Scalars['String'];
 };
@@ -299,6 +300,7 @@ export type UpdateEventMutationVariables = Exact<{
   desc: Scalars['String'];
   tagLine: Scalars['String'];
   name: Scalars['String'];
+  location: Scalars['String'];
   eventId: Scalars['Int'];
 }>;
 
@@ -336,7 +338,7 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'Query', getEvent: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, createdAt: string, updatedAt: string, creatorId: number, eventId: number, likes: number, voteStatus?: Maybe<number>, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } } };
+export type GetEventQuery = { __typename?: 'Query', getEvent: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, location: string, description: string, creatorId: number, createdAt: string, updatedAt: string, posts: Array<{ __typename?: 'Post', id: number, body: string, imgUrl: string, createdAt: string, updatedAt: string, creatorId: number, eventId: number, likes: number, voteStatus?: Maybe<number>, comments: Array<{ __typename?: 'Comment', id: number, body: string, createdAt: string, updatedAt: string }>, event: { __typename?: 'Event', id: number, name: string, imgUrl: string, tagLine: string, description: string }, creator: { __typename?: 'User', id: number, username: string, bio: string, imgUrl: string } }>, creator: { __typename: 'User', id: number, username: string, email: string, name: string, bio: string, imgUrl: string, createdAt: string, updatedAt: string } } };
 
 export type GetPostQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -749,8 +751,14 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateEventDocument = gql`
-    mutation updateEvent($desc: String!, $tagLine: String!, $name: String!, $eventId: Int!) {
-  updateEvent(eventId: $eventId, name: $name, tagLine: $tagLine, desc: $desc)
+    mutation updateEvent($desc: String!, $tagLine: String!, $name: String!, $location: String!, $eventId: Int!) {
+  updateEvent(
+    eventId: $eventId
+    name: $name
+    tagLine: $tagLine
+    desc: $desc
+    location: $location
+  )
 }
     `;
 export type UpdateEventMutationFn = Apollo.MutationFunction<UpdateEventMutation, UpdateEventMutationVariables>;
@@ -771,6 +779,7 @@ export type UpdateEventMutationFn = Apollo.MutationFunction<UpdateEventMutation,
  *      desc: // value for 'desc'
  *      tagLine: // value for 'tagLine'
  *      name: // value for 'name'
+ *      location: // value for 'location'
  *      eventId: // value for 'eventId'
  *   },
  * });
@@ -939,6 +948,7 @@ export const GetEventDocument = gql`
     name
     imgUrl
     tagLine
+    location
     posts {
       id
       body

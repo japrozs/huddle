@@ -61,6 +61,7 @@ export class EventResolver {
         @Arg("name") name: string,
         @Arg("tagLine") tagLine: string,
         @Arg("desc") desc: string,
+        @Arg("location") location: string,
         @Ctx() { req }: Context
     ) {
         const event = await Event.findOne({
@@ -76,6 +77,7 @@ export class EventResolver {
                 name,
                 tagLine,
                 description: desc,
+                location,
             }
         );
         return true;
